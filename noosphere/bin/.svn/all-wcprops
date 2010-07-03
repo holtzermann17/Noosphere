@@ -1,0 +1,245 @@
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/38/trunk/noosphere/bin
+END
+preprocess-jsmath.pl.bak
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/noosphere/bin/preprocess-jsmath.pl.bak
+END
+checkmissing.sh
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/noosphere/bin/checkmissing.sh
+END
+newrenderall
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/3/trunk/noosphere/bin/newrenderall
+END
+preprocess-jsmath.pl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/13/trunk/noosphere/bin/preprocess-jsmath.pl
+END
+invalidate_missing.pl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/invalidate_missing.pl
+END
+spelld
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/3/trunk/noosphere/bin/spelld
+END
+freplace.pl
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/3/trunk/noosphere/bin/freplace.pl
+END
+nohup.out
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/38/trunk/noosphere/bin/nohup.out
+END
+spelld_restart.sh
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/spelld_restart.sh
+END
+snapshot_gen.sh
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/noosphere/bin/snapshot_gen.sh
+END
+make_browsable_snapshot.pl
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/3/trunk/noosphere/bin/make_browsable_snapshot.pl
+END
+pmlines
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/3/trunk/noosphere/bin/pmlines
+END
+renderall
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/38/trunk/noosphere/bin/renderall
+END
+publishall.pl
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/13/trunk/noosphere/bin/publishall.pl
+END
+pm_backup.pl
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/3/trunk/noosphere/bin/pm_backup.pl
+END
+init.sh
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/3/trunk/noosphere/bin/init.sh
+END
+pmidxsrv
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/3/trunk/noosphere/bin/pmidxsrv
+END
+nnexus_index.pl
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/noosphere/bin/nnexus_index.pl
+END
+start_searchengine.sh
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/start_searchengine.sh
+END
+latex2html
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/3/trunk/noosphere/bin/latex2html
+END
+mscexport
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/3/trunk/noosphere/bin/mscexport
+END
+spelld_rehash.sh
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/noosphere/bin/spelld_rehash.sh
+END
+clean_rendering_disk_cache.pl
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/3/trunk/noosphere/bin/clean_rendering_disk_cache.pl
+END
+timeout
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/14/trunk/noosphere/bin/timeout
+END
+start_searchengine-lucene.sh
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/38/trunk/noosphere/bin/start_searchengine-lucene.sh
+END
+cleansearchresults
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/cleansearchresults
+END
+newpreprocess-jsmath.pl
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/3/trunk/noosphere/bin/newpreprocess-jsmath.pl
+END
+find_badvers.sh
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/noosphere/bin/find_badvers.sh
+END
+invalidate_bad.pl
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/invalidate_bad.pl
+END
+logchange.pl
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/3/trunk/noosphere/bin/logchange.pl
+END
+synhighlight
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/3/trunk/noosphere/bin/synhighlight
+END
+xmlexport
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/3/trunk/noosphere/bin/xmlexport
+END
+outstandingcor
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/3/trunk/noosphere/bin/outstandingcor
+END
+invalidate_errorrender.pl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/3/trunk/noosphere/bin/invalidate_errorrender.pl
+END
+batch_file_corrections.pl
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/3/trunk/noosphere/bin/batch_file_corrections.pl
+END
+start_searchengine-essex.sh
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/3/trunk/noosphere/bin/start_searchengine-essex.sh
+END
+cleantemp
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/3/trunk/noosphere/bin/cleantemp
+END
+buildsets.pl
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/3/trunk/noosphere/bin/buildsets.pl
+END
+gs
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/3/trunk/noosphere/bin/gs
+END
+ir_index.pl
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/38/trunk/noosphere/bin/ir_index.pl
+END

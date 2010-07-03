@@ -1,0 +1,10 @@
+category : publications
+
+papers will be able to be submitted by the authors or any planetmath user
+
+two submission methods:
+
+1 ) wget URL. if the URL to a copy of the paper, already online, is known, this can simply be given and a local wget or wget-like program on planetmath will download it
+
+2 ) ftp account.  users with space on planetmath, which is accessible by ftp, will be able to simply give a path relative to their web space to a file within it, presumeably a paper.
+

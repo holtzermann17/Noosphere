@@ -1,0 +1,11 @@
+<table cellpadding="0" cellspacing="2">
+  <tr>
+    <td>
+      <span title="<NS:template useralt raw/>" style="cursor:help;"><a href="<NS:template main_url/>/?op=aboutratings"><NS:template userrating raw/></a></span>
+	</td>
+    <td>
+      <span title="<NS:template entryalt raw/>" style="cursor:help;"><a href="<NS:template main_url/>/?op=aboutratings"><NS:template entryrating raw/></a></span>
+    </td> 
+  </tr>
+</table>
+

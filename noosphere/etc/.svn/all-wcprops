@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/38/trunk/noosphere/etc
+END
+httpd-example.conf
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/etc/httpd-example.conf
+END
+stopwords.txt
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/3/trunk/noosphere/etc/stopwords.txt
+END
+httpd-planetmath.conf
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/etc/httpd-planetmath.conf
+END
+lucene_search.conf
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/38/trunk/noosphere/etc/lucene_search.conf
+END
+essex.conf.example
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/etc/essex.conf.example
+END
+pm.cron
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/3/trunk/noosphere/etc/pm.cron
+END

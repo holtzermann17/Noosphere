@@ -1,0 +1,16 @@
+since we are only storing LaTeX and not the rendered pages with images,etc, we want to cache the rendered pages.  to do this, we take each hit as it comes in. the hits correspond to locations in the name space.  if this location exists on disk, in a literal filesystem path, then we serve up the page at this location. if it does not exist, we then query the database and generate the page.  this is placed on disk, and then served to the user.  now subsequent hits to that namespace target will be served from the cache.
+
+if something has changed, for example, a theorem has been updated, it will be invalidated by simply deleting it from the filesystem cache.
+
+in this view the filesystem is simply the database for our cache.  we wont *directly* serve up files in this cache.  tthe namespace heirarchy will still be directly visible to the user, but it will look something like this
+
+http://planetmath.org/getpage?target=Algebra.LinearAlgebra.CramersRule
+
+this 'getpage' script will first look for this namespace item in the database.  if it doesn't exist, you get an 'object not found'.  if it exists, it simply goes to our cacheroot on disk and looks for the file:
+
+$cacheroot/Algebra/LinearAlgebra/CramersRule
+
+this cache could be stored on a compressed, loopback filesystem. look into this.
+
+
+

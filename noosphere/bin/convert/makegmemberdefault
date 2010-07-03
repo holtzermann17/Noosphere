@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use Noosphere::Groups;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+
+  my $usertbl=Noosphere::getConfig('user_tbl');
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'uid', FROM=>$usertbl});
+  my @users=Noosphere::dbGetRows($sth);
+
+  # add each user to their own group
+  #
+  foreach my $user (@users) {
+   
+    # uncomment to catch new users past some point
+	#if ($user->{uid} > 241) {
+  	  my $groupid=Noosphere::lookupfield(Noosphere::getConfig('groups_tbl'),"groupid","userid=$user->{uid}");
+	  print "user $user->{uid} group $groupid\n";
+      Noosphere::addUserToGroup($groupid,$user->{uid});
+	#}
+
+  }

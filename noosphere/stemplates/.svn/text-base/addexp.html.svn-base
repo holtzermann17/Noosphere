@@ -1,0 +1,50 @@
+<form method="post" action="/" enctype="multipart/form-data">
+ <b>Exposition guidelines</b>:
+ <ul>
+ <li> This section is for expositions which are <b>not books</b>.  They will generally be for educational purposes, but it is most important that they are not considered papers or books for them to appear here.  Lecture notes for a course are a good example of what should go here. 
+ <li> <b>"Rights" are required for every item!</b> If you dont know what the rights are, please check before doing anything (including asking the author of the work if need be).  If you are the author, please formulate a rights statement ("Public domain" is a nice one).</li>
+ <li> You must either upload the exposition or provide URLs linking to it. <b>Uploads are preferable to linking</b>, but require rights to redistribute. Try to get permission to upload if possible.</li>
+ <li> Starred (<font color="#ff0000">*</font>) fields are required.
+ </ul>     
+
+ <hr>
+
+ <font color="#ff0000" size="+1"><NS:template error raw/></font>
+  
+   Title<font color="#ff0000">*</font>: <br><input TYPE="text" name="title" value="<NS:template title qhtml/>" SIZE="75"><br>
+   Authors<font color="#ff0000">*</font>: <br><input TYPE="text" name="authors" value="<NS:template authors qhtml/>" SIZE="75"><br>
+ <br>
+  Keywords (<a href="<NS:template main_url/>/?op=assocguidelines">Guidelines</a>):<br> <input type="text" name="keywords" value="<NS:template keywords qhtml/>" size="75"><Br><br>
+
+
+  Classification (See <a target="planetmath.popup" href="http://planetmath.org/?op=mscbrowse">MSC</a>):
+  <br>
+  <input type="text" name="class" value="<NS:template class qhtml/>" size="75">
+  <br>
+  <font size="-2">
+  (examples: "msc:11F02", "msc:11F02, msc:11F03, msc:05R16". "msc:" can be omitted, assumed by default.)
+  </font>
+  
+  <br><br>
+ 
+ Additional Comments (typically date, # of pages, etc):<br>
+ <input type="text" name="comments" value="<NS:template comments qhtml/>" size="75" max="128">
+ 
+ <br><br>
+
+ Rights statement<font color="#ff0000">*</font> (URLs will become hyperlinks):<br>
+  <textarea name="rights" cols="75" rows="4"><NS:template rights/></textarea><br>
+    
+ <br><br>
+ Abstract<font color="#ff0000">*</font> :<br>
+ <textarea name="data" cols="75" rows="8"><NS:template data/></textarea><br><br>
+
+ URLs for any remote content (one per line):<br>
+ <textarea name="urls" cols="75" rows="4"><NS:template urls/></textarea><br><br>
+
+ <NS:template fmanager raw/>
+
+ <input type="hidden" name="op" value="addlec">
+ <input type="hidden" name="table" value="lec">
+ <center><input TYPE="submit" name="post" VALUE="finished"></center>
+</form>

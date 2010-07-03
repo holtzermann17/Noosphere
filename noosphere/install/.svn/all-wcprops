@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/3/trunk/noosphere/install
+END
+patch-latex2html-2002-2
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/3/trunk/noosphere/install/patch-latex2html-2002-2
+END
+patch-latex2html-2002-2-math.pl
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/3/trunk/noosphere/install/patch-latex2html-2002-2-math.pl
+END
+patch-latex2html-2002-2-styles
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/3/trunk/noosphere/install/patch-latex2html-2002-2-styles
+END
+INSTALL
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/3/trunk/noosphere/install/INSTALL
+END

@@ -1,0 +1,1210 @@
+Sat Nov  8 19:20:03 UTC 2003  Aaron Krowne <akrowne@vt.edu> Note 0102
+
+  1. PlanetMath mail will now by default result in an e-mail notification. 
+     This can be turned off with a new preference, "Also send email for each 
+     system notice?".
+
+  2. The notification metadata for message posts/replies has been updated, so
+     that the first few lines of the post content will actually appear as the
+     comment of the notice. This also means users get a "preview" of the post
+     within email, if they have notice emails turned on.  To accommodate this
+     change, the subject of the post was combined with the subject of the 
+     notice, as in 
+
+       "Re: message post subject" (reply)
+
+	 or 
+  
+       "message post subject" (post)
+
+  3. Auto-hyperlinking of post content has been made much smarter.  It was 
+     also failing regarding whitespace bugginess before.
+
+  4. The post screen now has some guidance about entering posts as ASCII, and
+     letting Noosphere do the hyperlinking automatically.
+
+Wed Oct 15 04:40:44 UTC 2003  Aaron Krowne <akrowne@vt.edu> Note 0101
+
+  1. Added parallel notice email feature.
+
+Thu Jun 12 01:15:02 UTC 2003  Aaron Krowne <akrowne@vt.edu> Note 0100
+
+  1. Added support for Mysql and switched PlanetMath over to Mysql.  There are
+     plenty more bugs to stamp out here.
+
+Wed Feb 26 06:18:32 UTC 2003  Aaron Krowne <akrowne@vt.edu> Note 0099
+
+  1. Added multiple-editing colission handling: now check-outs are stamped with
+     a version, and if the database version of an object goes up, the checked
+     out version is not allowed in.  In this situation, the user is told to 
+     go open a new edit for the object and to copy over/integrate the changes
+     they were working on.
+
+  2. Added a version roll-back for object owners.  This simply replaces the 
+     current version of an object with the selected version (from the history
+     page) and tosses out all revisions after it.   The rollback behavior could
+     be nicer, but this should suffice for easy combatting of malicious edits.
+
+Sun Dec 15 09:23:55 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0098
+
+  1. Added emailing for object transfer events.
+
+  2. Added user preferences for converting these emails into notices.
+
+  3. Added "cite" to list of commands that require reruning LaTeX.  Abstracted
+     this list to "$reruns" variable.
+
+  4. Misc changes.
+
+Wed Dec  4 19:45:59 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0097
+
+  1. Make "user activity" page viewable to all logged-in users.
+
+  2. Cut off number of users shown on "user activity" page to last 50.
+
+  3. Fixed a bug where the comment and subject were reversed in notices sent
+     for object edits.
+
+Sat Nov  2 20:51:22 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0096
+
+  1. Added correction retraction, whereby the filer of a correction can
+     "cancel" the correction without ever having to wait for the target user
+     to reject it.  
+
+  2. To go along with the above, the "edit corrections" functionality was split
+     into two sections: "corrections to your objects", and "corrections you've
+     filed".  From the latter, one can now click on "-" to retract a pending
+     correction.
+
+  3. When viewing a correction they have filed,  a "retract this correction"
+     control appears.
+
+Wed Sep 25 20:10:47 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0095
+
+  1. Cleaned up login behavior.  No longer should double submits from clients
+     cause people to get registered twice.  Also, the bug where being 
+     registered twice prevented people from logging in has also been removed.
+
+  2. Added account deactivation and reactivation.  When an account is 
+     deactivated, the user cannot log in.  THey are informed of this when they
+     attempt to log in.
+
+  3. Added account deletion.  For content integrity purposes, this is not
+     allowed unless the user hasn't created any objects.
+
+  4. Added an admin control for the above to the user display page.
+
+  5. Added globals to all templates, for things like site URLs.  This needs to
+     be employed in all templates, so no locations are hardcoded.
+
+Sun Sep 15 04:22:57 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0094
+
+  1. Cleaned up user objects list.  This now shows objects in all sections,
+     not just encyclopedia. 
+
+  2. Added in an event hook so that anyone who is watching an object gets a
+     notice when someone edits it, with the revision comment included.
+
+Wed Sep 11 15:07:12 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0093
+
+  1. Added groupings to user preferences, so they appear more organized.
+
+  2. Improved the search engine a bit: put stemming and stopping in the 
+     correct order; combined the df list with the dictionary itself.
+
+Tue Sep 10 02:58:26 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0092
+
+  1. Added "Cache Control" admin feature.  This allows viewing cached fields 
+     in a variety of groups (stats, encyclopedia, file) and selectively 
+     invalidating elements of these groups.  
+
+Sat Sep  7 22:32:50 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0091
+
+  1. Removed "Typographical" correction type; added "Meta" correction type.
+     Meta is typographical + anything about the entry's metadata (that is, not
+     the mathematical content.)  Also made the correction filing screen more
+     user-friendly, with an online help blurb for the types.
+
+Wed Sep  4 12:58:38 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0090
+
+  1. Added a "permissions" item to the user menu.  This is very similar to the
+     ACL editor for a single object (in fact, the functionality was folded into
+     the same subroutine), except it is of global scope.  Here, users can 
+     configure their default ACL which gets applied to each new object they
+     create, and they can retroactively apply this default ACL to all of their
+     objects.
+
+  2. Added a "view" item to the user box next to "your info" which lets users 
+     quickly jump to their user info page, as others see it.
+
+  3. Reworded some things on the "owner controls" box.
+
+  4. Updated some statistics stuff; was missing deletion updates.
+
+Sun Sep  1 10:07:29 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0089
+
+  1. Added a "Statistics Caching" system (StatCache.pm) which eliminates the 
+     need to frequently recalculate nontrivial statistics (for example, the top
+     user list and latest additions/modifications are all extremely processor
+     and disk intensive to produce).  Essentially, this "lazifies" the
+     production of these statistics.  They are cached in a database hash and 
+     can either be invalidated directly by portions of the system in response
+     to events, or invalidated due to timeouts (this is useful for the 
+     last-two-weeks top user list).  This should greatly increase the speed of
+     the system.
+
+Thu Aug 29 18:44:31 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0088
+
+  1. Added "Typographical" correction type.
+
+Tue Aug 27 21:40:31 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0087
+
+  1. Moved "view history" control out of owner/admin boxes and into the display
+     of each object's metadata that everyone can see.  There was really no 
+     reason to hide this.
+
+  2. Added convenient "create editor group" to the one-click control panel
+     owners of an object see.  This allows the owner of an object to quickly
+     create a group which has write permissions to that object.  After clicking
+     this control, the user is placed in the group configuration screen.
+
+  3. Greatly augmented the group "member editor" screen, such that it is now a
+     generic "group configuration" screen.  Added title/description change 
+     functionality and cleaned up the arrangement of widgets.
+
+     Also, added auto name-to-id resolution, so users can input either name or
+     user id to add members to their groups.  
+
+     For when this fails, I've added a blurb explaining that you can simply 
+     find users in the search engine, and directly add them to a group from 
+     their "user info" page.
+
+Tue Aug 27 00:45:45 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0086
+
+  1. Rearranged and added to the "ACL editor" page.  Now there is a select box
+     which allows the user to choose an existing group they admin to be the 
+     subject of the access rule.  This eliminates the need to look up a group
+     id.
+
+  2. Added some code to set a "default" revision comment for when a 
+     correction is accepted.  This should make the object editing history 
+     display a little more useful.
+
+  3. Added a new preference for auto-watching corrections filed *to* one's own
+     objects (by other people).  This is on by default.  (should have been 
+     added long ago).
+
+Mon Aug 26 00:51:16 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0085
+
+  1. New, improved mathytitle implementation.  This one is built around a 
+     generic math-chunk rendering architecture, and a hash table of image
+     binaries in the database.  New mathytitle images generated on demand.
+
+  2. Fixed a problem with TeX->UTF8 ichar conversion by making a new TeXtoUTF8
+     which does NOT convert the entire string to latin1 (only the TeX ichars.)
+     For the old functionality, TeXtoUTF8_fromLatin1 should be used.
+
+Sun Aug 25 20:51:35 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0084
+
+  1. Added to encyclopedia interact menu an "update request" link.  This 
+     sends the user to the request fulfilled updater, with the canonical name 
+     of the referring object already filled-in.
+
+Sun Aug 25 16:12:50 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0083
+
+  1. Reorganized so that the Books/Papers/Expositions sections are all done
+     by a single, generic module.  XSLTized most of it too.
+
+Wed Aug 21 10:31:46 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0082
+
+  1. XSLified encyclopedia add/edit forms.
+
+  2. Made considerable changes to the XSLTemplate engine.  Added some key stuff
+     to make it more compatible with plain html Templates and how we were 
+     using them (such as setKey* functions).  
+
+     Also added DOCTYPE entity definition stuff to the XSL tranformation 
+     source text header (sorely needed). 
+
+  3. Added "proves self" to encyclopedia edit and add forms.
+
+Tue Aug 20 07:02:16 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0081
+
+  1. Added a database admin interface.  It revolves around a freeform query
+     interface, however, it is a little smarter: when possible, it slips oids
+     into the result set of rows on a select, and uses these as keys to allow
+     updates and deletes of arbitrary returned rows.  
+
+     Also there is a "get info" command, and a table dropdown, so one can 
+     quickly retrieve the schema and index information (as well as table size)
+     for any table.
+
+     Missing is a "query builder" interface, which would be especially useful
+     for things like inserting new rows in arbitrary tables, based on their
+     schema (perhaps this should be added by itself, since updates and deletes
+     are fast enough using the freeform query interface.)
+
+     Unfortunately, this is all very postgres-centric.  I don't see any way to
+     generalize, not even through DBI.
+
+Fri Aug  9 21:30:23 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0080
+
+  1. Implemented "mathytitles."  This means that titles containing short math
+     sequences like $\pi$ will be replaced with actual symbols.  This isn't
+     exhaustive; its really only meant for representing very clumsy symbols
+     or bb/cal fonts, or greek letters.  Things like $p$-adic will be left
+     alone.  
+
+  2. Cleaned up admin qwik-edit a bit and made it so that it actually saves
+     version snapshots.
+
+Fri Jul 26 16:19:51 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0079
+
+  1. Put in the "prompt notice" system.  This allows notices to be sent which
+     require (allow) a choice to be made, as a selection among alternatives. 
+     When the user clicks on a choice (or deletes the notice), an action is
+     performed.
+
+  2. Used the above to add "Ask" as an option for accepting of symmetric
+     "related" link behavior.  In other words, now you can set this preference 
+     to "Ask" (instead of just "Yes" or "No"), and you will receive a prompt
+     notice which allows one-click accepting (and zero-click rejecting) of 
+     a related link which completes relation symmetry.
+
+Thu Jul 25 10:45:29 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0078
+
+  1. Rearranged getEncyclopediaExtras (the display of info below an encyc.
+     entry) to be more readable.  "See Also" is now first, as per someone's
+     suggestion.  
+
+Wed Jul 10 23:44:08 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0077
+
+  1. Changed the schema of the "users" table so that the prefs field is "text"
+     rather than "varchar(255)".  This makes the length effectively unlimited
+     and solves some problems that were occurring (prefs wouldn't update.).
+     The schema definition file (pm.sql) has been updated to reflect this, and
+     all of the table contents have been converted.
+
+Wed Jul 10 23:22:26 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0075
+
+  1. Introduced notice-sending for situations where users have set their 
+     preferences to avoid receiving email upon correction events (such as 
+     correction closing for the filer, correction reception for the author.)
+
+Wed Jul 10 01:48:22 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0074
+
+  1. Changed the main operation dispatch method in PlanetMath from a (shameful)
+     practice of chaining together a bunch of string comparisons with "elsifs" 
+     to a hash-based lookup with the op name as key.  Not that I see any speed 
+     increase (though there should be one in principle), but this is just a 
+     better way to do things.
+
+Mon Jul  8 06:12:30 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0073
+
+  1. Added control on user display page which allows the page viewer to easily
+     add the displayed user to any of the viewers groups, via a select box.
+     Combined with the ability to pull up users in the search engine, this 
+     entirely removes the need to directly enter in user IDs when defining
+     groups.
+
+  2. Made category IDs clickable on long classification printouts.  Clicking
+     on the ID will now bring you to the MSC browse listing for that category,
+     allowing you to see other entries for the same subject.
+
+Mon Jul  8 02:55:59 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0072
+
+  1. Added notice-sending for adding-user-to-group and removing-user-from-
+     group events.
+
+  2. Cleaned up new XSL user info display a bit, "From" is no longer shown
+     when all 3 fields (city, state, country) are left blank.  Same goes for
+     "Name."
+
+Mon Jul  8 02:22:15 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0071
+
+  1. Fixed a bug which surfaced because now things others than encyclopedia
+     entries are in the object index.  In short, there was spurious info 
+     showing up in the "user corrections received" statistics because 
+     encyclopedia objects weren't being selected on.
+
+  2. Modified the user generic object listing template so that when there is
+     an empty listing, a message is displayed.
+
+Sun Jul  7 20:18:50 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0070
+
+  1. Added password change service to handle forgotten passwords.
+
+Fri Jul  5 06:41:44 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0069
+
+  1. Users are now (title and IR) indexed.  This process happens at activation
+     time, of course.
+
+  2. Users now show up in the search engine.  I spiffed up the generic object
+     search engine result rendering code since its being used to show the
+     user results.
+
+  3. Changed user info display to XSL template framework.  Added the ability
+     to call getUser from GetObj, so users are now generic "objects."
+
+     To make the XSL template I used behave like old-sk00l templates, I had to
+     put in stub setKey() and requestsKey() methods.  These could concievably
+     do meaningful things at some point (but only in a heuristical sense.) See
+     the code for more details.
+
+     Note that without these stubs, you cannot use a GetObj handler that 
+     returns an XSL template.
+
+Fri Jul  5 02:35:25 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0068
+
+  1. Fixed up the "cleanCmp" function that is supposed to sort things for
+     the encyclopedia index view.  It was, in reality, doing nothing.
+
+  2. Fixed up the "mangleTitle" function.  It is now considerably more robust,
+     and the prefix "the" is also taken care of.  To see that this works,
+     look under "T" in the encyclopedia and note that none of the titles start
+     with "the."
+
+Thu Jun 27 00:42:17 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0067
+
+  1. Added exact match to search engine.  Exact matches of the query string
+     against object titles are promoted to the top of the results list.
+
+  2. Removed visibility of author controls to non-logged-in users.
+
+Mon Jun 24 03:22:21 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0066
+
+  1. Updated the encyclopedia alphabetical index.  Now goofy characters
+     like quotes will not appear as index characters.  Also, names like
+     "proof of X" are mangled to "X, proof of" for proper alphabetization.
+
+     This was all achieved through expanding the objindex table and adding
+     an index character (ichar field) which is derived from a mangled name
+     at title indexing time.  Hence, the logic does not have to be repeated
+     for each item at display time.
+     
+  2. Finally put in some date pretty-printing for messages.  Now you only
+     see date and hour:minute.  The date is shown as month/day if the current
+     year matches the message posting year, otherwise its yyyy-mm-dd.
+
+Sat Jun 15 22:36:28 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0065
+
+  1. Added preamble viewer.  
+
+Wed Jun 12 06:54:40 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0064
+
+  1. Overloaded the current MSC browser so that it can handle browsing
+     without a "from" parameter.  In this situation, it will just allow 
+     traversal of the entire MSC tree, with appropriate modifications 
+     regarding not showing any objects filed in the categories.
+
+Sat Jun  8 18:03:30 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0063
+
+  1. Added 8-bit char searchability to MSC search engine (by converting from         latin 1 to HTML entities).  Other updates to character set function 
+     names.  See bug #54.
+
+Fri Jun  7 10:31:40 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0062
+
+  1. Finally updated the main "objects" table.  I cleaned out some vestigial
+     columns (like revid), and expanded synonyms, defines, keywords, and 
+     relateds to "text" fields to remove length limit restrictions. Also    
+     extended title and canonical name field to 255 characters from 128.
+
+     Since PG doesn't have a column drop, I had to create a temporary table
+     with the updated schema, then INSERT INTO SELECT ... FROM the old table.
+     Then I issued a rename (ALTER TABLE ... RENAME TO ...) and re-created
+     the indices.
+
+Thu Jun  6 02:31:55 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0061
+
+  1. Added "showwatchers" op.  This op takes an object pointer as a parameter
+     and returns a list of all users who have watches set for that object.
+
+  2. Made the word "Watch" in the watch widget a hyperlink to the above.
+
+  3. Put a pager on the messages display.
+
+  4. Rearranged some of the watch updating interface stuff.  Changed the param
+     ordering of updateWatches.  Added updateEventWatches, which has only one
+     context object instead of two.  This was used to add notice sending for
+     the request fulfillment confirming/denying events.  Also, preferences were
+     added so users can select if they want watches added automatically for when
+     they fill a request, when they report that others have filled a request, or
+     when others report that they've filled a request. 
+
+     In summary, users will now be notified of when all key request-related 
+     events take place.
+
+  5. Updated normal correction filing so that when a correction is filed, all 
+     users watching that object receive notice of the correciton.  This should be
+     especially useful for those who are co-authors of an object and want to keep
+     tabs on it.
+
+Thu May 30 12:24:33 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0060
+
+  1. Fixed unproven theorem count, changed it (and the listing query) to
+     use a left outer join.
+
+Wed May 29 17:28:29 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0059
+
+  1. Put in the "read" portion of a version control system.  This means that
+     now the system is saving snapshots of all revisions, and also that 
+     editors/authors/admins can view these snapshots.  
+  
+     Some sort of diffing is still needed.
+
+     And perhaps in the distant future, a way to render the old snapshots.
+
+Tue May 28 11:54:11 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0058
+
+  1. Put in the beginnings of a version management system.  From this point
+     on, all revisions of entries will result in an XML snapshot being saved
+     on the system.  The next step is to make a "revision browser" type system
+     so that editors can inspect revisions.  After that, rollback capability
+     should be added.  What would be really neat here is to send a notice to
+     all modifiers whose changes are cancelled informing them that this has
+     happened.  
+
+Fri May 24 12:27:03 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0057
+
+  1. Generalized and XSLTized user object listings.  This could be the 
+     beginnings of a simple, generic paging architecture.  I should experiment
+     with adding generic sorting controls to it sometime.  
+
+     Took advantage of this system to add listings of all corrections a user
+     has both filed and received.
+
+  2. Added hit count to encyclopedia extras display.  Also made a hits detail
+     page accessible from here which shows hits in last day, week, month, year,
+     and altogether.
+
+Wed May 22 08:54:40 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0056
+
+  1. Added handling for international characters.  In specific, this means that
+     linking works from TeX-forms of international strings to iso-8859-1
+     internationalized strings.  
+
+	 In addition, linking is done between properly internationalized titles
+     in iso-8859-1 to raw ASCII strings which are "approximations" of the 
+     internationalized versions.  So for example, "adele group" will link to
+     an entry called "adèle group".
+
+Tue May 21 08:22:12 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0055
+
+  1. Added unclassified objects list.  Eventually, when the confirmation notice
+     system is constructed, I'd like to allow any users to simply suggest
+     classifications right from this list.
+
+Sun May 19 01:55:49 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0054
+
+  1. Added "quality" and "productivity" metrics to user list page.  See the
+     the page itself for more information.
+
+Fri May 17 00:26:26 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0053
+
+  1. Hacked up support for antialiasing within graphics (such as anything
+     included via \includegraphics).  This drastically improves the quality
+     of diagrams.  (Thanks to Ross Moore on this one.)
+
+Wed May 15 22:50:07 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0052
+
+  1. Canned the old user defuault ACL table and replaced it with a version
+     that supports arbitrary ACL rules (not just ones of "default" type). This
+     was needed to support access rules for default "write" to the user's
+     self-named group.
+
+  2. Updated new user creation code to create a group for the user, this had
+     been left out.
+
+  3. Updated new user creation code to add user default ACL rules for the 
+     following rules: rule type "default", "everyone can read", and rule type
+     "normal", "anyone in the user's self-named group can write".
+
+Tue May 14 05:38:17 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0051
+
+  1. Added code to notify users when corrections are filed to objects they
+     are watching (if they aren't the owner or filer.) Should this be 
+     extended to correction closing, and perhaps any object editing?
+
+Tue May 14 05:01:25 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0050
+
+  1. Added a control when admin views a request to deny the request. This
+     removes all fulfillment information from the database so that the 
+     request will appear with the unfulfilled requests.
+
+Mon May 13 22:49:33 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0049
+
+  1. Fixed capitalization linking foibles. For example, "Binomial Theorem"
+     would not get linked because the actual object doesn't have "Theorem"
+     capitalized in the title.  Changed bareword() to return lower-case, and
+     modified istagged() so that it is false if the only change of a word
+     transformed by bareword() is capitalization.
+
+Fri May 10 22:58:09 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0048
+
+  1. Added a pager and sorting widget for the user list. We might want to
+     copy + generalize this sorting widget (like we did for the paging
+     widget).  
+
+  2. Renamed the page widget from getPageWidget to getPager.
+
+Wed May  8 21:44:18 UTC 2002  Logan Hanks <logan@vt.edu> Note 0047
+
+  1. XSLTized mscBrowse, added stemplates/mscbrowse.xsl
+
+Tue May  7 01:47:58 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0046
+
+  1. Now SplitLaTeX() tries to escape bibliographies from automatic 
+     linking.  This is done by escaping text beginning with one of the
+     following strings, and continuing to the end of the entry:
+      
+      \begin{thebibliography}
+      {\bf References}
+      {\bf Further Reading}
+    
+	 Surely we will need to add more, in time.  Also, the recombining
+     sub had to be updated to handle the fact that escaped portions can
+     be nested; instead of simply looping through the escaped portions 
+     once, it simply replaces all @@[0-9]+@@ found with the appropriate
+     escaped sequence until there are no more of these escape codes left.
+
+Mon May  6 07:31:36 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0045
+
+  1. Small change in code, major ramifications: correction filers no longer
+     get any points for accepted corrections to entries they have permissions
+     to edit directly.  We don't prevent them from actually filing a
+     correction, since this sort of bookkeeping can be useful.
+
+     Changed code in closeCorrection().
+
+Sun May  5 08:01:09 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0044
+
+  1. Added an "author list" to object displaying.  You can see this at work
+     in the "extension field" entry (# 703), which has now been edited by
+	 djao, though it is owned by drini.
+
+Sat May  4 13:08:18 UTC 2002  Logan Hanks <logan@vt.edu> Note 0043
+
+  1. Added some preliminary XSLT support.  With a little work this will be
+     an excellent replacement of the previous template systems.
+
+  2. Templatized the Requests page, as further proof of concept.  Was able
+     to generalize the *Box functions from Layout.pm as XSL templates,
+     and successfully called these templates from the open request list
+     template.  I think we'll be able to eventually successfully apply
+     XSLT to all our pages, but it will take a while to convert everything.
+
+Thu May  2 23:26:33 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0042
+
+  1. Serious repairs to the message posting notification system.  Basically, 
+     it never worked right.  There wasn't even any hope for it.  Most changes
+     were made to updateWatches().  Redesigned the handling for duplicate
+     notification-- now instead of trying to guess a priori whether notices were
+     sent to a user, we simply keep track of whether notices were sent before
+     processing reply notification.
+
+Wed May  1 08:14:36 UTC 2002  Logan Hanks <logan@vt.edu> Note 0041
+
+  1. Modified "other text escaping" regex of splitLaTeX to escape any begin
+     and end commands not escaped by the previous mechanisms (so
+     \begin{center} would not be cross-referenced).  This might need to
+     be handled more gracefully.
+
+Wed Apr 24 00:55:35 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0040
+
+  1. ACL data structures and primitive handler functions implemented.  Now
+     getObj() checks ACL permissions before serving up an object.  This should
+     be the general method for determining if a user has read/write/ACL 
+     access to some object.  Default ACLs for users, defaults copied over upon
+     object creation.  ACL editor needs to be finished.
+
+Sun Apr 21 22:00:16 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0039
+
+  1. Nicities for MSC search engine: you can now search for MSC ids.  Also,
+     results returned have clickable IDs, which link into the MSC tree.
+
+Sun Apr 21 19:48:19 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0038
+
+  1. Added "up" arrow images to corrections and all attachment objects.
+
+  2. Fixed stats to show new types on "latest" lists.
+
+Wed Apr 17 03:07:54 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0037
+
+  1. Added "Application" type.  This is kind of like an "Example" object, in
+     terms of status and relation to other objects.
+
+Wed Apr 17 01:15:03 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0036
+
+  1. Separated TODO list into sections: interface, infrastructure, and data
+     provision.
+
+Wed Apr 17 01:02:52 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0035
+
+  1. Updated newuser guide (newuser.html) to reflect changes in the type system
+     and the addition of a "defines" field to objects.
+
+Tue Apr 16 23:14:21 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0034
+
+  1. Many changes to put in a richer type system.  Firstly, completely updated
+     Config.pm structures to reflect new types Example, Corollary, Conjecture,
+     Derivation, Example, and Result.  Unified two hashes, since one was just
+     the reverse of the other.
+
+  2. Second, updated templates for encyclopedia adding and editing.  "proof"
+     was changed everywhere to "parent", since now a parent is needed for more
+     than just proofs.
+
+  3. Updated encyclopedia interact sub to return a menu with provisions for
+     the new types.  I.e, derivations to definitions, corollaries and results
+	 to theorems, proofs to conjectures, and examples to any object type.
+
+  4. Miscellaneous other replacements of "proof" param with "parent".
+
+  5. Added a Util function to determine if a type (given as either integer or
+     string) is an attachment type, called isAttachmentType.
+
+Sun Apr 14 01:02:19 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0033
+
+  1. Fixed the spellcheck on message posting bug.  This was another bug left
+     over from the initial template implementation; setKey was called for the
+     wrong template object (it should have been $post->setKey).
+
+  2. Fixed some unquoting issues for the returned spellcheck text.  Also put
+     the text in singlequotes to avoid shell-escaping.
+
+Sat Apr 13 23:25:42 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0032
+
+  1. Added messages for correction objects. Corrections are now standard
+     objects and are retrieved through "getObj()".
+
+  2. Added generalized watches. There's now a getWatchWidget function.  Also,
+     getObj() automagically takes care of setting watches and displaying the
+     toggle widget, provided a "watch" key is present in the template.
+
+  3. Watches are automatically set for corrections and requests filed.
+
+  4. Now only registered users can post requests.  There's a link on the 
+     error message screen that comes back when an anonymous user tries to file
+     a request, which goes to the "newuser" function.
+
+Sat Apr 13 19:28:39 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0031
+
+  1. Added a valid userid check to the "adoptObject" function.  The lack of
+     this check meant that anonymous users could adopt objects, which led to
+     what can only be called amusing results. See bug 53.
+
+Fri Apr 12 16:39:02 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0030
+
+  1. Added to the beggining of splitLaTeX in Crossref.pm a line to bracket
+     entry text in spaces.  This fixes some boundary cases which case the
+     splitting regexps to fail (see bug 51, which is about an entry that 
+     starts with $X$.)
+
+Wed Apr 10 13:55:25 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0029
+
+  1. Added display of previous owner for orphaned objects in orphanage().
+
+Wed Apr 10 13:43:44 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0028
+
+  1. Fixed the adoptable object query in orphanage().  The query was not 
+     at all taking into account the oldest correction for a given object,
+     as makes sense.  The query had to be replaced with a more complex 
+     GROUPed sub-query and wrapper super-query.
+
+Sun Apr  7 15:02:10 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0027
+
+  1. Finally added error output reporting for entry adding/editing.  This 
+     basically just replaces the normal planetmath.html output with some 
+     post-processed output from error.out (which is a new file created by 
+     directing both stderr and stdout from the latex2html process.)  So, now
+     it is easier to write entries "on-line"-- God have mercy on our CPU.
+
+Tue Mar 12 15:18:44 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0026
+
+  1. Auto orphaning was broken; it was orphaning an object which was actually
+     the correction ID.  This is fixed.  Also, it would have been orphaning
+     every object which has a 2 week outstanding correction, if it hadn't been
+     for the fact that it was crashing on the first object it tried to orphan.
+
+Sat Mar  9 08:31:25 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0025
+
+  1. Got the query spellfixer up and running.  It takes the form of a daemon
+     which is in the bin directory, called "spelld".  It basically just sits
+     there and listens for requests on TCP port 3060 (changable in the config)
+     for some input.  When a client connects and prints a sentence (which is
+     meant to be a query), it splits the query up and looks for all of the
+     words in the lexicon.  This is done using n-gram indexing, approximated
+     Ukkonen distance, and finally Levenshtein distance as a fine-grained 
+     comparison metric.  The daemon then returns a sentence which contains one
+     word for each input word.  The results are "+" for a word in the lexicon,
+     "-" for a word not in the lexicon and which couldn't be corrected, and
+     a replacement word for words not in the lexicon which corrections were
+     found for.  In Search.pm is a fixQuery() sub which acts as a client that
+     sends a query to this daemon, and parses the output into a replacement 
+     query.  If any "-" words result, it gives up.  Much more work needs to be 
+     done; for instance, the spell daemon should probably output a "-" if its 
+     suggestion ends up having a Levenshtein distance which is above some 
+     threshold. 
+  
+  2. Found and fixed a bug in the search engine whereby a divide by zero would
+     occur for queries on words which exist in the index, but do not occur 
+     in any documents.  Also synched the query df weighting with the method
+     of weighting based on df for the document vectors.
+
+Fri Mar  8 01:27:46 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0024
+
+  1. Changed how start and end tags are saved in cross-referencing.  There is
+     now an array kept with the start and end tags for every word in the 
+     anchor text.  Also added a preprocessLaTeX sub which does some of the 
+     junk that was at the end of splitLaTeX (but shouldn't have been).  Also
+     put a hack in this that changes "{\it foo}" type attribute settings to
+     "{\it foo }", which keeps braces balanced inside anchors.  See bug 38.
+ 
+  2. Added a msgCountWithNew() sub to Messages.pm.  This can be used to get
+     a little display of total and unread messages for an arbitrary object.
+ 
+  3. Added messages to requests.  Changed requests to be generic objects, and
+     they are now accessed through getObj().  Added the above message counter
+     to the requests list screen.
+
+  4. Lots of little changes in linking.  Removed __NL__ and __CR__, I think 
+     whatever these were needed for is now deprecated.  See bug 40. 
+  
+Thu Mar  7 17:16:32 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0023
+
+  1. Changed contextHighlight to fix a problem whereby the highlighting would
+     break if two query terms were adjacent. 
+
+  2. Changed encyclopedia object rendering proc (in GetObj) so that 
+     the link to the pronunciation guide is inline with the top of the
+     pronunciation section (to save space.)
+
+  3. Added a danglinglinks script in bin/convert.  This script analyzes the
+     reference links table and removes links which are to or from a
+     nonexistant object.  We had about 800 such links.  I don't think that 
+     any more will occur, since now all reference links are deleted when 
+     re-linking an entry.
+
+  4. Modified GetObj so that it detects unowned objects and doesn't try to do
+     a join on the user table for them.
+
+Thu Mar  7 13:01:16 UTC 2002  Logan Hanks <logan@vt.edu> Note 0022
+
+  1. Imported all of PlanetMath that seemed relevant into a CVS repository
+     on functor.  If you have an account on functor that is in the pm group,
+     then the pm module is available under the /var/lib/cvs repository (for
+     example, for remote access, set the variables CVS_RSH=ssh and
+     CVSROOT=:ext:user@planetmath.org:/var/lib/cvs, then run "cvs co pm"; or
+     on functor itself, simply set CVSROOT=/var/lib/cvs instead)
+
+  2. lib/Planetmath.pm: now uses dbConnect instead of hard-coded connect
+
+  3. {etc,lib}/pmconf.pm: made a really crude "base configuration" file.
+     This is needed for installation-specific settings, and the file itself
+     must be installation specific.  This is really tricky to get to work
+     with Apache, mod_perl, cvs, and all that.  Currently lib/pmconf.pm is
+     supposed to be just a symlink to etc/pmconf.pm, and only the symlink
+     itself is stored in the repository.
+
+  4. lib/Config.pm: some changes to use pmconf.pm; some config variables now
+     refer to settings established by pmconf.pm (things dealing with paths
+     and DB information so far)
+
+  5. lib/DB.pm: the hostname is now specified explicitly in dbConnect
+
+  6. lib/{Layout,Util}.pm: moved readFile from Layout.pm to Util.pm, where
+     it belongs (the reason for its existence in Layout.pm is deprecated)
+
+  7. etc/httpd-planetmath.conf: Moved all httpd configuration relevant to
+     PM into this file.  This file should simply be included by the root
+     httpd.conf (stole this notion from scoop).  This file should be copied
+     into lib/httpd-planetmath.conf, and included from there.  The file in
+     etc is stored in cvs and serves as an example or starting point.  The
+     file in lib is what is installation specific, and should be what is
+     included into httpd.conf.
+
+
+Wed Mar  6 20:07:50 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0021
+
+  1. Augmented the orphaning system slightly so it can recognize who the last
+     owner of an object was, and avoid updating the grace interval when this
+     same person adopts back their own object.  This is done by changing the 
+     owner of an object to -(oldid), where oldid is the user id of the owner,
+     at abandoning time.  All comparisons have been updated so that userid<=0
+     is the true "unowned" criterion.  To check if we should update the grace
+     interval at adoption time, we simply check if $curuserid=-$userid.  NOTE:
+     We should probably change the "anonymous" user to be user zero everywhere
+     in the code.  Currently, we have a user with id 1, and there could be some
+     conflicts as -1 is the "nobody" user right now.
+
+  2. Added an autoOrphan function and a call to it in the outstandingcor 
+     script.  Now orphaning should happen automatically.
+
+
+Mon Mar  4 05:15:39 UTC 2002  Logan Hanks <logan@vt.edu> Note 0020
+
+  1. Made some minor additions to the (so far) undocumented orphanage and
+     adoption system.
+
+    a) Added function isAdoptable, to make the logic buried in the orphanage
+       function accessible.
+
+    b) Changed the adoptObject function so that it checks isAdoptable.  The
+       implementation was that an object was only adoptable if it was
+       unowned, but this contradicted the orphanage function, so I presumed
+       the logic that is now in isAdoptable is acceptable to govern this.
+
+    c) Implemented reset of graceint on pending corrections for an object
+       when it is adopted (as described in Note 0019-3).
+
+    d) Also added a check that prevents adopting objects you already own.
+       However, nothing prevents you from abandoning and then adopting
+       your own objects, so one can avoid responding to corrections
+       indefinitely by this method (not sure if it's worth the trouble to
+       prevent).
+
+    e) Fixed logchange.pl (there are exactly 9 days a month where the day of
+       the month has a single digit, you know :P).
+
+
+Sun Mar  3 10:47:19 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0019
+
+  1. (These changes are really all from yesterday) Implemented + and - (which
+     I call "forcing" and "forbidding") functionality to the search engine.  
+     This allows the user to require that a word appear in the "match set" for
+     and entry, or allows the user to require that a word NOT appear.  The
+     functionality appears to work completely. 
+
+  2. Added a "self" field to the encyclopedia objects table. This should be set
+     to "true" if the object contains its own proof.  Added code to the "show
+     unproven theorems" functionality to check for this flag.  Added a control
+     to the admin metadata editor to turn this flag on.  Added functionality
+     to the update object metadata functions to handle checkboxes as booleans.
+     Still need to add this to the normal object editor screen.
+
+  3. Added an outstanding correction nag system.  Added a "nag_times" hash to
+     the config describing when the various nag stages happen and how the 
+     nagging recurs.  Added the "nag" table, which allows the system to 
+     remember the time of last nag.  Added an outstandingcor script to the bin
+     directory, which gets run every hour to process nags (and soon, orphaning
+     objects automatically.)  Most of the nag functions are in Corrections.pm.
+     Also added a "graceint" field to the corrections table.  This is a "grace
+     interval", which is meant to be used if an object is adopted.  At such 
+     time, it should be set to the difference between the current time and the
+     time each correction was filed, so that the new owner may "start fresh".
+
+Sat Mar  2 23:29:37 UTC 2002  Logan Hanks <logan@vt.edu> Note 0018
+
+  1. Implemented the beginnings of a pronunciation guide system.  See
+     Pronounce.pm.  Any pronunciation has associated with it an encoding.
+     An encoding merely consists of a method to render it to html so that
+     it has a human readable form.  In the future it will also be possible
+     to denote mappings between encodings, so that, for instance, something
+     simple like "jargon" encoding could be automatically translated to
+     "IPA".
+
+
+Thu Feb 28 13:02:59 UTC 2002  Logan Hanks <logan@vt.edu> Note 0017
+
+  1. Created a function getUnprovenTheorems, which obtains the list of
+     objects of type theorem that do not have objects of type proof attached
+     to them.  Also created a page accessible by op=unproven, to generate
+     this list and provide convenient "fill" links for interested parties.
+     This should be linked from the main page somehow.
+
+
+Thu Feb 28 12:32:24 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0016
+
+  1. Missing an lc($word) in findmatches() in Crossref.pm, hence capitalized 
+     words weren't getting matched in the terms hash, and hence no links to 
+     capitalized objects were getting made.  Fixed this.  Wrote a script to 
+     title invalidate (using xrefTitleInvalidate()) the portion of the corpus 
+     this effects.  See bug 33.
+
+
+Thu Feb 28 09:26:37 UTC 2002  Logan Hanks <logan@vt.edu> Note 0015
+
+  1. User and admin corrections pages are now paged
+
+  2. The list of another user's objects is now paged
+
+
+Thu Feb 28 08:21:32 UTC 2002  Logan Hanks <logan@vt.edu> Note 0014
+
+  1. Added a user preference named pagelength
+
+  2. The getPageWidget function no longer takes a scalar as a second
+     argument.  Instead, it must be given a reference to a user_info
+     hash, so that it may determine the proper page length from the
+     user preference added in (1).
+
+
+Thu Feb 28 08:02:20 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0013
+
+  1. New "logchange.pl" script in the bin dir, which I am currently using to
+     edit this file.  Automatically generates the changelog entry header line,
+     and puts you in the editor.  Handles "locking" on changelog file.
+
+  2. Cleaned up some links table problems.  There were about 6 times as many
+     entries in the tables as real links, due to an architecture flaw in how
+     links are handled when objects are edited, and the fact that no checks
+     for duplicate links were ever made.  This never hurt linking, but it was
+     picked up when we wanted to get real link statistics.  Now I've added an
+     xrefLinkPresent() function to check to see if a link exists before making
+     it.  Also added some error checking to xrefAddLink() when I noticed the
+     links table had links from objectid "-1".  Now there will be a warning
+     produced whenever either of the object ids is <0, or either of the table
+     names are blank.
+
+
+Thu Feb 28 05:12:37 UTC 2002  Logan Hanks <logan@vt.edu> Note 0012
+
+  1. Fixed missing $template->expand() in Books.pm in order to close bug 29.
+ 
+  2. Created new FileCache object (documented in docs/filecache.txt)
+
+  3. Changed Template.pm to use FileCaches
+
+  4. Created adminstats.html stemplate and added an op that provides an
+     admin stats page.  Currently the only thing there is a count of file
+     cache hits and invalidations.  May be useful for future stuff.
+
+  5. Fixed a typo in dispmessages.html (bug 31)
+
+  6. Moved escaping of .*algorithm environments to before inline-math
+     escaping in Crossref.pm, as Lalgorithm environments almost always
+     contain inlined math.  Fixes bug 30.
+
+  7. Implemented display of object owners in search output.  I don't know
+     if it should stay the way I did it.
+
+
+Wed Feb 27 12:28:05 UTC 2002  Logan Hanks <logan@vt.edu> Note 0011
+
+  1. Revamped the code to take advantage of the new system introduced in
+     Note 0009-2.  This required tons of minor changes, and the semantics
+     of some functions have changed.  For instance, all of the functions
+     called by getObj to generate html now return template objects instead
+     of text.  Similar changes abound.
+
+
+Wed Feb 27 12:23:40 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0010
+
+  1. Put in a "defines" display for search results.  This is important 
+     because concepts people will be searching for may not appear as bona-
+     fide titles.
+  
+  2. Made metadata headers ("From", "Classification", "Defines") appear 
+     underlined in search results. 
+
+  3. Put in context highlighting of search results.  This means that results
+     have query terms bolded, and extra junk between occurances is limited
+     in length and replaced with "..." in the middle.  New function is 
+     contextHighlight() in Search.pm.  Also this took over some of the former
+     functionality of getEncyclopediaResultText(), so that function is 
+     modified.
+
+  4. "Defines" now has a red asterisk in front of it if there are "hits" in
+     the defines field, which should help draw the user's attention to them
+     to help them find the concept they were looking for, assuming it appears
+     in the "Defines" field.  This works by simply comparing the text for the
+     field pre- and post-contextHighlight. 
+
+Wed Feb 27 05:53:25 UTC 2002  Logan Hanks <logan@vt.edu> Note 0009
+
+  1. Modified htmlescape to add escaping of & before escaping of < and >.
+
+  2. Bug 26 illustrated a few problems with the current template system,
+     which lead me to discover a few more problems (about which I won't go
+     into detail here).  So I've implemented a new template system, which
+     consists of all of the code in Template.pm.  The rest of the code has
+     not been moved over to use this new system yet, so everything else has
+     remained pretty much untouched.  This new interface should (will?) be
+     documented somewhere shortly.
+
+Tue Feb 26 22:46:30 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0008
+
+  1. Made the handling of tags/quotes around words in the cross-referencing 
+     much simpler.  See notag(), getstarttag(), getendtag().  Also removed 
+     code from splitLaTeX() that inserted extra spaces to try to isolate 
+     "words" (away from punctuation), as this is no longer necessary. See 
+     bug 25.
+
+Tue Feb 26 13:41:23 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0007
+
+  1. There was a bug in getRequestUpdater which was keeping the new "update" 
+     link from resulting in an updater screen with the proper request already
+     selected.  The line
+
+     my $requested=$options->{$request};
+
+     was wrong, since this gets the title of the request, and the select box
+     is initialized by the hash key (which is the id).
+
+  2. Updated DelObj.pm so the generic object delete behavior is to delete a
+     row in the $params->{from} table with the right id, and then to do the 
+     standard stuff.  A stub had been left in which kept everything but 
+     encyclopedia objects from actually getting deleted.
+
+  3. Added deleteFileBox() to Filebox.pm, so that fileboxes get cleaned out 
+     upon deleting.
+
+  4. Changed some parameter checks from "defined" to nb() in 
+     handleFileManager().  $params->{tempdir} was getting set to "" versus 
+     undef, so by the second call, handleFileManager thought it was editing in 
+     a temp dir.  This fixes bug 22.
+
+Tue Feb 26 12:09:07 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0006
+
+  1. Moved handling of \PMlinkescapeword and \PMlinkescapephrase to a new
+     sub in Crossref.pm called getEscapedWords, which is called in makelinks().
+     This shifts the implementation of these pseudo-commands from an a-priori
+     substring removal of the desired string from the latex to an a-posteriori
+     check on the titles on which links were produced for the entry.  The old
+     behavior would also kill linking of "mean value theorem" if the user 
+     requested \PMlinkescapeword{mean} (bug 12).  This is no longer a problem.
+
+  2. Actually got the synonym and defines link suppression to work. Had to 
+     make changes to generateterms() and makelinks() mostly.
+
+  3. Grabbag of other fixes related to deleting objects (unindexing was not 
+     happening or was erroneous).  Most changes in DelObj.pm.  See bugs 14+19.
+ 
+  4. Actually made "defines" field get updated in database in EditObj.pm. See
+     bug 21.
+
+Tue Feb 26 05:01:08 UTC 2002  Logan Hanks <logan@vt.edu> Note 0005
+
+  1. Increased main_memory in /etc/texmf/texmf.cnf by a factor of 10.  For
+     some reason using curved lines in this particular xypic figure required
+     more memory.  Why this was not a problem with my automata diagrams, I do
+     not know.  Note that to change texmf.cnf, after you save the file, you
+     must run fmtutil --all for changes to take effect.
+
+  2. Commented out assignments to $desc in getObj.  I believe this fixes the
+     problem of user-preferences being ignored in regards to message order,
+     and that this parameter to getMessages is deprecated.
+
+  3. Modified getSelectBox so that it sorts the keys of the hash it is given
+     before generating the selectbox.
+
+  4. Added getSelectBoxSortByValue, a variant of getSelectBox that sorts by
+     the values in the hash instead of the keys.
+
+  5. Added "update" link next to "fill" link on each request.  The update
+     form can now set the requested request as the default item in the
+     request select box if specified, and this new update link takes
+     advantage of that.  The request selectbox is now generated by
+     getSelectBoxSortByValue as well.
+
+  6. Added humanReadableCmp, which is meant to define a more human readable
+     ordering on strings.  Currently it is crude -- strings with
+     non-alphabetic leading characters sort ahead of anything else, and
+     the rest is simply a case-insensitive lexicographic sort.  It also
+     strips things like quotes first, and collapses spaces.
+
+  7. Modified the editcors op so that it takes a global parameter.
+     This parameter only has effect for admins and, if defined lists all
+     objects with pending corrects (as opposed to the list of all
+     corrections for the current user that it typically displays).
+
+
+Mon Feb 25 14:22:49 UTC 2002  Aaron Krowne <akrowne@vt.edu> Note 0004
+
+  1. Changed $MATH_SCALE_FACTOR back to 1.6.  There were some occurances of
+     very ugly rendering with the smaller scale factor.  If you dont believe
+     me, try setting the scale factor back to 1.5 and rerendering the 
+     "self-dual" entry.  Look at the \rightarrows and equal signs in 
+     particular, parts of them nearly dissapear.  Other symbols are bad too.
+
+  2. Completely changed the synonym handling system and generalized it to 
+     handle a "defines" field.  This involved:
+
+     * Creating a new table, objindex, which serves as a "title" index for
+       any object on planetmath.  This includes defines, synonyms, and 
+       actual "master" titles for an entry.  The different types are 
+       differentiated by 1 for master, 2 for synonym, and 3 for defines.
+
+     * Changing the encyclopedia index to query the above table instead of
+       the encyclopedia table (objects) itself. 
+
+     * Changing createSynonyms and deleteSynonyms to use the new schema.
+
+     * Changing getEncyclopediaExtras to display "defines" if there are any.
+
+     * Changing the encyclopedia entry "add" and edit forms for handling 
+       the "defines" field, as well as the support functions for these forms.
+
+     * Creating an "indexTitle" in Indexing.pm which maintains the objindex
+       record for the title for an object, and calling this from object 
+       adding/updating locations (in Encyclopedia.pm and EditObj.pm.)
+
+     Synonym/defines "surrogates" are still stored with each object's record,
+     in "defines" and "synonym" fields.
+
+  3. Updated the reference linking system to make use of the "defines" field.
+     I thought this was going to be simple, but I ran into a little crisis at
+     what should have been 3/4 of the way through implementing it.  The problem
+     was that the mapping of a unique "concept" to an actual entry, and making
+     sure that a link to that "concept" doesn't happen twice in the same entry,
+     and that the first occurance of the "concept" is the only one that gets 
+     linked, was going to be basically impossible the way things were done 
+     before.  To fix this, I had to actually change the generateterms() 
+     function to generate what I call a "concept id" for entries that are 
+     truly unique concepts, and put them in a hash so that the object ids they
+     refer to can be looked up.  So basically, the deciding factor for whether
+     a term gets a new concept id is whether its type is either 1 (master 
+     title entry) or 3 (defines entry.)  A concept id => object id hash is 
+     built from these entries first, and then a reverse-lookup is done for all
+     the synonyms and they are given concept ids that have already been
+     generated.  
+
+     The rest of the changes are in makelinks(), where unique "concepts" are 
+     the final determining factor for whether a link is "unique."
+
+     Note: There is a problem on the horizon.  We're going to have to take 
+     care of the situation where someone needs to define synonyms for a 
+     *defines* item in an object.  I guess we need an "advanced" synonyms 
+     field where the user can enter things like
+      
+                defines1 = defines1.synonym1
+                defines1 = defines1.synonym2
+                defines2 = defines1.synonym2
+                  ...    =      ...
+                
+     and then toss these mappings into objlinks as syonym types.
+     
+     Note: Much linking may be broken at this point, but I tried a couple 
+     entries and they seem fine.
+
+     Note: Why does vim syntax highlight "may" in changelogs??
+     [jan feb mar... -LBH]
+
+Mon Feb 25 09:14:54 UTC 2002  Logan Hanks <logan@vt.edu>  Note 0003
+
+  1. Modified splitLaTeX so that quoted dollar signs are more appropriately
+     handled (I can imagine certain cases that are still broken, e.g.,
+     $sequential$$math$$with$$no$$spaces$, but that's just dumb anyway)
+
+
+Mon Feb 25 06:56:46 UTC 2002  Aaron Krowne <akrowne@vt.edu>  Note 0002
+
+  1. Modified correction closing so that, if the closer doesn't modify the
+     correction text which gets copied into the closing comment, the comment
+     is set to "" (keeps it from appearing twice in the closing email.)
+
+
+Mon Feb 25 05:11:22 UTC 2002  Logan Hanks <logan@vt.edu>  Note 0001
+
+  1. Modified the system's latex2html script so that it forces \verb and
+     \verb* to always be \verb (as opposed to forcing them to always be
+     \verb*)
+  2. Added a cookie that does not explicitly set the domain attribute; the
+     cookie that does explicitly set that attribute is probably superfluous
+  3. Added javascript autofocus on the term field of the search form
+  4. Spawned a ChangeLog
+  5. Modified getSelectBox to take an additional, optional parameter attrs,
+     which is a string that is added to the generated <select> tag
+  6. Added javascript autosubmit on the view style select box in GetObj.pm
+
+

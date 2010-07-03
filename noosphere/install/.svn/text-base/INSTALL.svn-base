@@ -1,0 +1,320 @@
+                               
+                           ============================
+
+                           Noosphere Installation Guide 
+                            
+                           ============================
+
+This guide is valid as of 2003-08-27.
+
+Section 1 : Prerequisites 
+=========================
+
+ You'll need the following programs and modules to run Noosphere (Debian 
+ packages given in parens, for those who run Debian, if available):
+
+ - PostgreSQL 7.2.1 or better (postgresql, postgresql-client) or 
+   MySQL 3.2 series or better (mysql-client, mysql-common, mysql-server)
+ - Apache 1.3 series (apache, apache-common)
+ - mod_perl (optional, but recommended) (libapache-mod-perl)
+ - perl 5.6 (or better), and the following perl modules:
+     * DBI (libdbi-perl)
+     * DBI postgresql driver (libdbd-pg-perl) or
+	   DBI mysql driver (libdbd-mysql-perl)
+     * Apache (comes with libapache-mod-perl)
+     * XML::LibXML (libxml-libxml-perl)
+     * XML::LibXSLT (libxml-libxslt-perl)
+     * XML::DOM (libxml-dom-perl)
+     * Unicode::String (libunicode-string-perl)
+     * Digest::SHA1 (libdigest-sha1-perl) 
+     * Data::Denter 
+
+   NOTE: perl 5.8 or better is recommended due to improved Unicode support.
+
+ - vim 6.0 or better (vim)
+
+   NOTE: This is for the syntax-highlighted source view.  Vim is only run in 
+   batch mode, this is not an attempt to switch EMACS-freaks over to the 
+   "dark side" !! 
+
+ - ispell (ispell)
+
+     * a dictionary such as American English (iamerican)
+
+ - wget (wget)
+ - tidy (from w3c) (tidy)
+ - ghostscript (gs or gs-aladdin)
+ - pbm utils (netpbm)
+ - LaTeX2e (tetex-base, tetex-bin)
+ - latex2html release 2002-2 (see special instructions below)
+ - ImageMagick 5 (libs and dev) or later (libmagick5, libmagick5-dev)
+
+Section 2 : Installation Procedure
+==================================
+
+ 1. Install the prerequisites (except latex2html, unless you've already got it,
+    in which case you should upgrade if its not 2002-2)
+      
+ 2. Go to the directory above where you want Noosphere to live.  Untar 
+    the Noosphere archive:
+	
+     tar -zxvf noosphere-VERSION.tar.gz
+
+	You may want to move or symlink the created directory to just "noosphere"
+    or something like "ns".  This directory will henceforth be referred to as 
+    $NSROOT.
+     
+ 3. Create a database and database user for Noosphere.  These can be named  
+    however you like, since you will just configure them later for Noosphere,
+    but for this installation guide we will refer to them as $NSDB and $NSUSER.
+ 
+    Please refer to the postgresql documentation on how to do this if you are
+    not familiar with the procedure.
+
+ 4a. Initialize the database for Noosphere:
+
+     cd $NSROOT/db
+     psql -W -U $NSUSER $NSDB < schema.pg.sql 
+	 
+	  or
+	  
+     mysql -u$NSUSER -p $NSDB < schema.mysql.sql
+
+    You also need to get some start-up data into the system; in particular a
+    root user and some forums.  Edit $NSROOT/db/init.sql to your 
+    liking, and then issue
+
+     psql -W -U $NSUSER $NSDB < init.sql
+
+	  or 
+
+     mysql -u$NSUSER -p $NSDB < init.sql
+
+ 4b. Load MSC (Mathematics Subject Classification scheme) category data if  
+     you have classification support turned on and want this scheme.  Issue a
+     command like the one above for your DBMS, but for msc.sql.
+
+ 5a. For latex2html, use the following configure procedure:
+
+      GS=$NSROOT/bin/gs ./configure
+
+     or
+
+      ./configure --with-gs=$NSROOT/bin/gs
+
+     If you've already installed latex2html, then edit the "pstoimg" script so
+     that $GS is set to the $NSROOT/bin/gs.  This wrapper is necessary
+     to do some low-level post-processing.
+
+ 5b. Make the latex2html programs:
+
+      make
+
+ 5c. Install latex2html:
+
+      make install
+
+ 5d. Patch latex2html for Noosphere:
+
+      patch latex2html < $NSROOT/install/patch-latex2html-2002-2
+
+     Also patch some other l2h modules:
+
+	  patch -p0 < $NSROOT/install/patch-latex2html-2002-2-math.pl
+	  patch /usr/local/share/lib/latex2html/styles/babel.perl < $NSROOT/install/patch-latex2html-2002-2-styles
+
+ 5e. Install patched latex2html locally for Noosphere:
+
+      cp latex2html $NSROOT/bin
+
+ 5f. For Russian support patch latex2html style files:
+
+      cd $L2HDIR/styles 
+      patch < $NSROOT/install/patch-latex2html-2002-2-styles
+
+     $L2HDIR will probably be something like /usr/share/latex2html.  For me it
+     was /usr/local/share/lib/latex2html.
+
+ 6. Get and build the search engine (ESSEX):
+
+	 Make a directory you want ESSEX to live in, lets call it $ESSEX, and 
+	 cd to it.
+
+	  wget http://br.endernet.org/~akrowne/elaine/essex/release/essex-latest.tar.gz
+
+	 (or similar).   Customize $ESSEX/server/config.h (it is safe to leave the
+	 default values).  Then make:
+
+	  cd $ESSEX/server
+	  ./make
+
+ 7. Build the page image hyperlink mapper:
+
+     cd $NSROOT/bin/map
+	 make
+
+ 8. Make sure the "data" working directories are writeable by the user that 
+    Noosphere is running as:
+ 
+     chgrp -R www-data $NSROOT/data/cache
+     chmod -R g+sw $NSROOT/data/cache
+
+     chgrp -R www-data $NSROOT/data/cache
+     chmod -R g+sw $NSROOT/data/cache
+
+
+ 9. Install the background tasks needed by Noosphere.  Lines similar to the 
+    following should be added to the crontab of the user Noosphere is running
+    as:
+
+     */10 * * * * $NSROOT/bin/renderall >/dev/null
+     */5 * * * * $NSROOT/bin/cleansearchresults >/dev/null 2>/dev/null
+     37 * * * * $NSROOT/bin/outstandingcor >/dev/null 2>/dev/null
+     00 8 * * * $NSROOT/bin/cleantemp >/dev/null 2>/dev/null
+     45 * * * * $NSROOT/bin/spelld_rehash.sh
+    
+    The "cleantemp" script itself must be changed to point to
+    
+     $NSROOT/data/cache/temp
+
+10. Set one-time tasks to initialize at system startup.  Inspect the file 
+
+     $NSROOT/bin/init.sh 
+
+	You will need to make changes to this file in terms of paths, and probably
+	want to put it in one of your /etc/init.d/ (or similar, depending on your
+	distribution) scripts.
+
+11. Install vim color syntaxing script:
+
+     cp $NSROOT/stemplates/pm.vim /usr/share/vim/vim61/colors/
+
+	 (or similar)
+
+ And that should be it!
+
+Section 3 : Configuration 
+=========================
+
+ For configuration, please direct your attention to (in this order):
+ 
+  1. $NSROOT/etc/httpd-example.conf 
+
+     This is a sample of an Apache/modperl setup for Noosphere (the one that is
+     used at PlanetMath).  It would be included in the main Apache httpd.conf 
+     with a line like:
+
+      Include /var/www/noosphere/etc/httpd-example.conf
+
+     You probably want to rename it to something more meaningful to your own 
+     project, and tool around with the values therein.  You do not need this 
+     many virtual hosts, so it is safe to pare down the configuration to a 
+     single virtualhost which has the mod_perl interface.
+
+	 The _SITE variables are not restricted to just being domain names, they
+	 can have paths, for example IMAGE_SITE could be "foo.com/~bar/images".
+
+     Of course, the directories will all need to be changed to conform to your
+     own $NSROOT.
+
+  2. $NSROOT/etc/essex.conf.example
+
+     This configures the search engine.   You'll have to change the paths in 
+     this file to point to $NSROOT/bin. 
+
+	 Also edit $NSROOT/bin/start_searchengine.sh to point to the 
+	 location of your ESSEX excutable (i.e. $ESSEX/server).
+
+  3. $NSROOT/lib/Noosphere/baseconf-example.pm
+
+	 Copy this to baseconf.pm in the same dir, and edit that.
+
+     This is the lowest-level config for Noosphere.  In here you will need to
+     set BASE_DIR to $NSROOT as well as enter in your database configuration.
+
+     IMPORTANT: You must set a value for the "HASH_SECRET" constant in this 
+	 file.  This will be used for security purposes.  You can use any source 
+	 you'd like to generate this string, but it should be as random as 
+	 possible.  
+
+     Also here, select whether you have support for classification schemes.
+
+  4. $NSROOT/lib/Noosphere/Config.pm
+
+     This is where most of the logic-level (as opposed to presentation-level)
+     configuration is done.  There is a lot in here, but most of what really 
+     needs to be changed is near the top.
+
+     The part you'll have to think hardest about are the entry types, since the
+     ones in there are geared towards mathematics in specific.  
+
+  5. $NSROOT/stemplates/*
+
+     (Suggested) 
+
+     These templates are what PlanetMath uses.  I imagine that some people will
+     want their own look-and-feel, as not much thought or time went into the 
+     graphic design of PlanetMath.  Be aware that the actual names of the 
+     template files aren't necessarily the most useful or consistent, so if you 
+     want to make a specific change to some particular page on the site, it may
+     help to simply grep for some unique string on that page in order to find
+     the right template file.  If you don't find anything, then you'll probably
+     have to dig into the code (which contains a fair amount of the form pages 
+     inline).
+
+     Of course, if you dont want to change the look and feel, you can basically
+     skip this (other than changing the IMG SRC for the site logo icon.)
+
+	 Some of the first template files you might want to attack:
+
+	 - header.html
+	 - main.html
+	 - frontpage.xsl
+	 - mainmenu.xsl
+	 - about.html
+	 - feedback.html
+
+     Note: the templates situation is pretty awful now, as the evolution from
+     HTML templates to XSL templates is not complete, and CSS is not heavily 
+     used.  Hopefully this will be fixed at some point in the future 
+     ( volunteers? =) )
+
+  6. $NSROOT/lib/Noosphere/Layout.pm
+
+     (Suggested)
+
+     Since the codebase has not yet been entirely XSLT-ized, this perl 
+     module is still needed.  It contains some presentation-layer routines that
+     you probably want to modify if you are changing the global colourscheme or
+     motif.  In the future this should be CSS-ized, then eliminated when it is
+     XSLT-ized.
+
+ Hopefully this will all be changing extensively soon, as more of the math (and
+ PlanetMath) specific parts of Noosphere are pulled out of the core system and
+ made into explicit configuration.
+
+Section 4 : Starting Up
+=======================
+
+1. Start up the search engine and other miscellaneous Noosphere services.  As root,
+   run
+
+    $NSROOT/bin/init.sh
+
+2. Start up apache with your Noosphere instance added to the configuration, as 
+   above.  
+
+    apachectl restart
+
+And you should be in business, with no hitches whatsoever! (yeah right)
+
+Section 5 : Getting Help
+========================
+
+ If something goes wrong, drop me a note at akrowne@vt.edu.
+
+ For instant gratification, you should log on to IRC.   Help can be found in
+ #planetmath, on server br.endernet.org or dominia.endernet.org.
+
+
+

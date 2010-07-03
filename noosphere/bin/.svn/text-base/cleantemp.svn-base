@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# this script cleans out the temp directory.  it removes all directories that
+# are older than 1 day.
+#
+
+CACHEDIR=/var/www/noosphere/data/cache/temp/
+
+cd $CACHEDIR
+
+# the `find' command basically does all the work for us.
+#
+find . -type d -not -ctime 0 -exec rm -r '{}' ';' 2>/dev/null >/dev/null
+

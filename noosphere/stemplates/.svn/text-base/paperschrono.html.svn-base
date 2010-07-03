@@ -1,0 +1,8 @@
+<table WIDTH="100%" CELLPADDING="0" CELLSPACING="2">
+ <tr>
+  <td><NS:template index raw/></td>
+ </tr>
+ <tr>
+  <td><NS:template commands raw/></td>
+ </tr>
+</table>

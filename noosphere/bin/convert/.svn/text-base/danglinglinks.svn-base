@@ -1,0 +1,37 @@
+#!/usr/bin/perl
+
+# go through links table and remove links to objects that dont exist
+#
+# currently uses a left join to quickly select which rows dont resolve; but
+# this is only done on the 'objects' table.
+#
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+  
+  my $table=Noosphere::getConfig('xref_tbl');
+
+  # find all unresolveable 'from' links
+  #
+  my ($rv,$sth)=Noosphere::dbLowLevelSelect($dbh,"select links.* from links left join objects on objects.uid=links.fromid where objects.uid is null union select links.* from links left join objects on objects.uid=links.toid where objects.uid is null");
+  my @missing=Noosphere::dbGetRows($sth);
+
+  my $count=0;
+  foreach my $row (@missing) {
+    print "broken link: from $row->{fromid}:$row->{fromtbl} to $row->{toid}:$row->{totbl}\n";
+	my ($rv,$sth)=Noosphere::dbDelete($dbh,{FROM=>'links',WHERE=>"fromid=$row->{fromid} and fromtbl='$row->{fromtbl}' and toid=$row->{toid} and totbl='$row->{totbl}'"});
+	$count++;
+  }
+
+  print "$count dangling links deleted\n";
+  

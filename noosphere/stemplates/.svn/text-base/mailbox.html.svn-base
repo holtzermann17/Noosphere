@@ -1,0 +1,21 @@
+<table width="100%">
+	<tr>
+		<td align="center">[ 
+			<a href="<NS:template main_url/>/?op=sendmail">write mail</a> | 
+			<a href="<NS:template main_url/>/?op=oldmail">old mail</a> | 
+			<a href="<NS:template main_url/>/?op=sentmail">sent mail</a> ] 
+		</td>
+	</tr>
+	
+	<tr>
+		<td align="center">
+			<i>New Mail</i>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<NS:template newmail raw/>
+		</td>
+	</tr>
+</table>

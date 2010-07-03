@@ -1,0 +1,119 @@
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/3/trunk/noosphere/bin/test
+END
+bareword.pl
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/noosphere/bin/test/bareword.pl
+END
+testscalar.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testscalar.pl
+END
+testsearch.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testsearch.pl
+END
+fragmentpseudos.pl
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/3/trunk/noosphere/bin/test/fragmentpseudos.pl
+END
+testgather.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testgather.pl
+END
+testtables.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testtables.pl
+END
+textolatin1.pl
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/test/textolatin1.pl
+END
+testarray.pl
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testarray.pl
+END
+arraytest.pl
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/test/arraytest.pl
+END
+spellclient.pl
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/test/spellclient.pl
+END
+htmltolatin1.pl
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/3/trunk/noosphere/bin/test/htmltolatin1.pl
+END
+testmail.pl
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testmail.pl
+END
+context.pl
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/noosphere/bin/test/context.pl
+END
+testsplit.pl
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testsplit.pl
+END
+utftest.pl
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/3/trunk/noosphere/bin/test/utftest.pl
+END
+testirsearch.pl
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testirsearch.pl
+END
+testirindex.pl
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testirindex.pl
+END
+graph_sense_disambiguate
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/3/trunk/noosphere/bin/test/graph_sense_disambiguate
+END
+testmangle.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/test/testmangle.pl
+END

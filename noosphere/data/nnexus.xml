@@ -1,0 +1,5 @@
+<domain>
+        <priority>planetmath.org, MathWorld, wikipedia.org</priority>
+	<blacklist>and</blacklist>
+</domain>
+

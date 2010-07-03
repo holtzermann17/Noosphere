@@ -1,0 +1,223 @@
+ 
+                            +-=-=-=-=-=-=-=-=-=-+
+                            | E . S . S . E . X |
+                            +-=-=-=-=-=-=-=-=-=-+
+
+                                   - is - 
+			 
+              (E)fficient (S)calable (S)earch (E)ngine for (X)ML
+
+
+                   (c) 2002-2003 Aaron Krowne, Virginia Tech 
+
+
+                               (rev. 20030426)
+
+by Aaron Krowne (akrowne@vt.edu)
+
+ at the Virginia Tech Digital Library Research Lab
+
+Code contributors:
+
+- Matthew Gracey
+- Kevin Ferguson
+
+Testing:
+
+- Ming Luo
+
+Permanent contact: Ed Fox (fox@vt.edu).
+
+About
+=====
+
+ESSEX is a search engine which is meant to meet the capabilities of ODL-IRDB
+v 1.1 so as to power an "equivalent" ODL component. This means it can be used
+as the underlying engine for XML records, and it has the same end-user search 
+capabilities as IRDB (more on this in the next section).
+
+Over IRDB, ESSEX subtracts reliance on an external DBMS, adds high speed 
+(through the C++ implementation and in-memory architecture), adds massive 
+scalability, and adds adjustable field weight ranking. 
+
+For more on the scalability, A standard desktop machine with 1GB of RAM should
+easily be able to run ESSEX with a million metadata records (note that 
+"metadata" is much smaller than full text, but about the same size as your 
+standard web page).
+
+ESSEX runs as a stand-alone daemon which communicates over sockets to a client,
+written in any language whatsoever.
+
+Features
+========
+
+- In-memory engine.  (Why? RAM is cheap!)
+- Fast indexing.
+- Fast unindexing/updates (distinct improvement over IRDB).
+- Fast searching.
+- Force/forbid (+/-) specifiers on query terms.
+- Field specifiers on query terms (e.g. "author:knuth").
+- Field weights are adjustable (e.g. "LaTeX abstract=1 title=5").
+- Unix domain and TCP socket architecture.
+- Comes with Perl client module.
+- Multithreaded.
+- Platform-independent (among POSIX systems). (Well, this is untested actually.)
+- Memory locking to prevent swapping when run as root (under linux).
+
+Installing
+==========
+
+1. Untar.  
+2. Inspect/modify config.h. 
+3. Take a look at "make" in server/.  It handles linux and BSD, but could 
+   possibly break in some variants.  If you don't have bash and/or g++ on your 
+   platform, you'll have to improvise (but the code /should/ compile in a 
+   standard setting).
+4. Run ./make (or equivalent)
+5. Configure essex.conf.
+6. The daemon is "essexd"; run this to start it.
+
+Interfacing With Your System
+============================
+
+If your system is perl, you may simply utilize SearchClient.pm.  Check out the
+files in the sample/ subdir to see how this is done.
+
+Otherwise, there are no pre-prepared client modules.  You can roll your own 
+based on SearchClient.pm.  Please let us know if you write one, we'd like to
+include it in future distributions for the benefit of others.
+
+Query Syntax
+============
+
+Queries are of the form:
+
+ (('+'|'-')?(field:)?term|field=weight)( ('+'|'-')?(field:)?term| field=weight)*
+
+Where
+
+ - 'field' is one of the metadata fields that was indexed.
+ - 'term' is any word being searched for
+ - 'weight' is a floating point number
+
+The capabilities this allows are:
+
+ - field:term to restrict occurrences of 'term' to the field 'field'.
+ - '+' and '-' operatores to force occurrences to appear in resulting documents
+   or to be absent, respectively.
+ - field=weight to scale the importance of field 'field' to 'weight'.  
+
+Field weighting is a relative notion.  The default field weight is 1.  If you
+set a single weight to something greater than 1, but do not specify any others,
+as in the query :
+
+    LaTeX title=5
+
+behind-the-scenes, all of the other fields will become worth 1/5, and title 
+will become worth 1.   
+
+Drawbacks
+=========
+
+Due to the in-memory-only architecture, you must re-index your collection 
+between reboots or crashes.   This should take around 10 minutes for about
+100,000 records on a 2 GHz machine.  Clearly, for small collections, this 
+start-up time will be negligible.  We hope to fix this soon by adding a disk
+image of the index.
+
+Because of the extreme compression of the search engine's data structures, 
+the following limits hold:
+
+- 16.7 million documents
+- 16 distinct metadata fields (or distinct XML elements)
+- 16 distinct term counts per element (i.e. word counts are only stored as 
+  a number from 1 to 16; anything higher than 16 is stored as 16).
+
+The term count should not be a serious problem for IR.  The document limit 
+also should not a problem; we mean ESSEX to be scalable, but it is no 
+Google(tm).  
+
+ (Hacker's note: you can easily raise these limits by changing code in 
+  posting_list.*, but at total memory cost proportional to the increased
+  aligned size of the new posting nodes).
+
+The metadata field limit is more serious.  This means for indexing XML 
+documents, you cannot willy-nilly throw anything into ESSEX.  You have to be 
+somewhat selective about which portions of the XML to index.  And really, you 
+should only be indexing fields that end-users care about, so it is almost
+always the case that some transform should be applied to the raw record XML to 
+produce smaller indexable XML.   
+
+However, if you aren't indexing XML, you probably won't view this as a major
+restriction; its hard to think of more than 16 useful fields anyway (Dublin 
+Core only has 15).  Remember, inasmuch as fields are not distinguishable to
+the end user in terms of query field restrictions, you can just concatenate
+fields into larger blobs (for example, you'd probably want to concatenate
+source fields "author1", "author2", "author3", etc, into just "author" for both
+ESSEX's and the end user's convenience.
+
+We think the limits above are reasonable for most non-capital-intensive
+applications.
+
+TODO
+====
+
+- Add disk-image to bypass re-indexing, complete with buffering and log 
+  playback.  Portions of this code are hanging around, commented out, from 
+  a much older version of this system.
+
+- There are some robustness issues in the socket communication; if the client
+  breaks off at the wrong time, the entire daemon will come crashing down.  
+  This really needs to be fixed.
+
+- Finish "compactify" routine so that it re-numbers all identifiers to free 
+  slots used by items that have since been removed.  Until this is done, there
+  may be a risk of needing to restart occasionally for very, very frequent
+  updates (not new additions) to the index.
+
+- Change the way term counts are interpreted so that the 16 distinct levels 
+  are a progressive scale by 1s, 2s, and so on, which will let us store counts 
+  from 1 to 60.
+
+- Do a radix sort for rankings at the end of search routine, rather than the 
+  STL introsort. 
+
+- Rewrite the core of vector_search::search.  The way the document vectors  
+  are handled (implicitly) is legacy design; this should really be reorganized
+  to use intmaps (which are more like "real" vectors).
+
+- Adaptive dimensionality reduction?
+
+- Tweak data structures based on empirical values derived from runs with 
+  varying query and collection sizes.
+
+- Stop using string class in stringmaps; use char arrays for efficiency?
+
+- Share actual strings in memory between the docid map and reverse map.
+  (Might save a few MB).
+
+- Take over vector allocation in stringmaps (the same as was done for intmaps) 
+  (Might save a few KB).
+
+- Figure out if we can do anything to explicitly return unused heap memory to
+  the OS. (Would be very, very useful for compactify).
+
+- Put XML traversing and indexing code in the SearchClient module, or in a 
+  separate script that utilizes it.
+
+- Explore feasibility of stemmed/unstemmed fusion (I've never heard of anyone 
+  doing this).  What this would do is index document terms unstemmed, and 
+  instead of stemming query terms, expand each term /backwards/ to every known
+  unstemmed word which can lead to the same stem (in other words, to the
+  equivalence class of the query word under stemming).  Then this expanded 
+  query would be applied, but with the *original* term weighted higher.  This 
+  would (likely) have the same recall as normal stemming, but a higher 
+  precision, since users would have more expressive power due to the 
+  distinction between query terms and other terms in the same stemmed 
+  equivalence class.  This is based on the intuition that it seems wrong for
+  stemming to place morphological variants in as high weighting as the verbatim
+  query, yet we don't want to lose the recall benefit they yield.
+
+- It would be nice to combine the intmap and stringmap classes, but I don't 
+  know enough about C++ templates to know how to manage this (somehow at 
+  compile-time we have to select between method implementations!).

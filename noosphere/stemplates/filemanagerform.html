@@ -1,0 +1,50 @@
+<table width="100%" cellspacing="2">
+ <tr>
+ <td bgcolor="#eeeeee" align="center">
+  <table><tr><td>
+  <center><font size="+1">Manage This Object's Filebox</font></center>
+   <br />  
+   <font size="+1" color="#ff0000"><NS:template ferror raw/></font>
+   
+   Urls to grab, if any (enter one on each line):
+   
+   <br />
+   
+   <textarea name="fb_urls" cols="75" rows="4"><NS:template fb_urls/></textarea>
+   
+   <br /><br />
+   
+   Attach file:
+   
+   <br />
+   
+   <input type="file" size="50" name="upload" value="" />
+   <input type="submit" name="filebox" VALUE="upload" />
+   
+   <br /><br />
+
+   <i>Note: when uploading diagrams, please also upload their sources.</i>
+
+   <br /><br />
+
+   Delete files:
+   
+   <table>
+    <tr>
+    <td valign="top">
+      <input type="submit" name="filebox" value="remove" />
+	  <input type="hidden" name="tempdir" value="<NS:template tempdir qhtml/>" />
+	  <input type="hidden" name="filelist" value="<NS:template filelist full/>" />
+	  <input type="hidden" name="filechanges" value="<NS:template filechanges qhtml/>" />
+    </td>
+    <td>
+      <NS:template rmlist raw/>
+    </td>
+    </tr>
+   </table>
+   
+  </td></tr></table>
+  
+ </td>
+ 
+</tr></table>

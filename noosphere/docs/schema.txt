@@ -1,0 +1,205 @@
+===========================================================================
+PlanetMath schema
+===========================================================================
+
+these tables are owned by the pm user.
+
+note: these are raw schema! there are no indexes or specifiers of uniqueness, monotonicity, non-nullity, et cetera, at the current moment.
+
+===========================================================================
+
+            Table "cache"
+ Attribute |     Type     | Modifier 
+-----------+--------------+----------
+ objid     | bigint       | not null            unique id of objects stored in cache
+ name      | varchar(256) |                     namespace object name
+ valid     | integer      | not null default 0  1 if valid in cache, 0 if not 
+ build     | integer      | not null default 1  1 if object is being built, 0 if not
+Index: cache_pkey
+
+> CREATE TABLE cache (objid int8 UNIQUE PRIMARY KEY NOT NULL,name varchar(256),valid int DEFAULT 0,build int DEFAULT 1);
+
+the cache table is the structure necessary to maintain an accurate cache. it works like this: the table starts off empty. a user requests an object from browsing planetmath.  the request is served by a perl function which checks the cache table for the 'name'.  if the name is not present, it then calls a procedure which generates the page to the cache directory and proper sub directories (based on the namespace id string).  in the meantime, the entry in the database is still "0" for invalid, but "1" for build. this means all subsequent requests will end up waiting and rechecking the database every (some interval) for valid to go to "1", at which point the page will be served from the cache location.  when the page is doing being built, build goes to 0 and valid goes to 1.
+
+note: if the object is not in the table, this is essentially equivalent to a value of "0" for valid, except after the object goes valid, it should always have an entry in the table.
+
+===========================================================================
+
+         Table "messages"     
+ Attribute  |     Type     |    Modifier                    
+------------+--------------+--------------------
+ uid        | bigint       | autoinc    unique id of message 
+ objectid   | bigint       | not null   unique id of object owning message
+ objecttype | integer      | not null   type of object owning message
+ replyto    | bigint       |            unique id of message this is a reply to
+ posted     | timestamp    | not null   time posted
+ userid     | bigint       | not null   unique id of user who posted
+ score      | integer      | default 0  score of message, for filtering
+ subject    | varchar(128) | not null default ''  subject
+ type       | integer      | not null default 1   1 for discussion, 2 for correction
+ pending    | integer      | not null default 0   1 if pending, 0 if not?
+ body       | text         | not null default ''  body
+Indices: messages_objectid_idx,
+         messages_uid_idx,
+         messages_userid_idx	  
+
+> create sequence messages_message_seq;
+> create table messages (uid int8 DEFAULT nextval('messages_message_seq'), objectid int8 NOT NULL, objecttype int NOT NULL, replyto int8, posted timestamp NOT NULL, userid int8 NOT NULL, score int DEFAULT 0, subject varchar(128) DEFAULT '', type int DEFAULT 1, pending int DEFAULT 0, body text DEFAULT '');
+> CREATE UNIQUE INDEX messages_uid_idx on messages (uid);
+> CREATE INDEX messages_objectid_idx on messages (objectid);
+> CREATE INDEX messages_userid_idx on messages (userid);
+
+
+this table is pretty self-explainatory, or at least intuitive.  a discussion should appear like this: a set of messages is pulled up that have the same objectid.  the top level should consist of messages with a blank replyto field, and under them goes the thread which is pulled from requests on the original set of messages having replyto field equal to the uid of the top-level message.  (implementation note: these are iterative sub-selects on the original set until every message is "attached" to a thread at some point, not sure how this could best be done efficiently). the messages are of course ordered by timestamp. 
+
+the "type" field would separate discussion messages from correction messages.  if type is set to correction, then the "pending" field is considered.  if there are pending corrections , then the object (the messages are attached to) could be flagged as having pending corrections.  when doing this, however, only top-level correction messages would be considered (any corrections with blank
+"replyto" fields).  
+
+===========================================================================
+
+           Table "objects"
+ Attribute |     Type     | Modifier 
+-----------+--------------+----------
+ uid       | bigint       |             unique id of object
+ type      | integer      |             object type 
+ userid    | bigint       |             unique id of creator of object
+ parentid  | bigint       |             unique id of parent object
+ next      | bigint       |             unique id of next object (serial objects~=lessons)
+ prev      | bigint       |                       of previous object
+ title     | varchar(128) |             title of object (freeform string)
+ dir       | varchar(128) |             namespace directory
+ name      | varchar(256) |             full namespace name (dir.name), not freeform 
+ created   | timestamp    |             timestamp of creation
+ data      | text         |             object data (LaTeX)
+
+> CREATE SEQUENCE objects_uid_seq;
+> create table objects (uid int8 DEFAULT nextval('objects_uid_seq'), type int NOT NULL, userid int8 NOT NULL, parentid int8 , next int8, prev int8, title varchar(128) NOT NULL, dir varchar(128) NOT NULL, name varchar(256) NOT NULL, created timestamp DEFAULT CURRENT_TIMESTAMP, data text NOT NULL);
+> CREATE UNIQUE INDEX objects_uid_idx on objects (uid); 
+> CREATE INDEX objects_title_idx on objects (title);
+> CREATE INDEX objects_dir_idx on objects (dir);
+
+this is the core of the site.  it is pretty self-explainatory. one note: i separated 'dir' and 'name' because this facilitates doing a lookup of all objects in a particular namespace directory, it is simply a full string match.
+
+===========================================================================
+
+             Table "types"
+  Attribute  |     Type     | Modifier                 
+-------------+--------------+-----------
+ type        | integer      | autoinc   type id (unique) 
+ name        | varchar(64)  | not null  type name
+ description | varchar(256) |           type description
+				 
+
+> CREATE SEQUENCE types_type_seq;
+> create table types (type int DEFAULT nextval('types_type_seq'), name varchar(64) UNIQUE NOT NULL, description varchar(256));
+> CREATE UNIQUE INDEX types_type_idx on types (type);
+
+this is a simple lookup table for the names of numeric types.
+
+===========================================================================
+
+         Table "sessions"
+ Attribute |   Type    |        Modifier        
+-----------+-----------+------------------------
+ uid       | bigint    | not null               unique id of user logged in
+ hash      | char(32)  | not null               session hash
+ ltime     | timestamp | not null default 'now' timestamp of when logged in
+ atime     | timestamp | not null default 'now' timestamp of last access
+ ip        | char(15)  |                        ip address of client
+ hostname  | varchar(128)                       hostname of client
+Index: sessions_pkey
+
+> create table sessions (uid int8 UNIQUE PRIMARY KEY, hash char(16) NOT NULL, ltime timestamp DEFAULT 'now', atime timestamp DEFAULT 'now', ip char(15), hostname varchar(128)); 
+
+this table allows us to keep track of who's logged in. i'm kind of sketchy on what we'll be doing here, so this will probably change.
+
+===========================================================================
+
+             table "actions"
+  Attribute   |     Type     | Modifier 
+--------------+--------------+----------
+ uid          | bigint       |          user's unique id
+ objid        | bigint       |          the object id the action was performed on
+ actid        | int          |          integer code for the action
+ data         | varchar(64)  |          any data that went with the action
+ stamp        | timestamp    |          timestamp of the action
+
+          Table "actions"
+ Attribute |    Type     | Modifier 
+-----------+-------------+----------
+ uid       | bigint      | not null     user's unique id
+ objid     | bigint      | not null     the object id the action was performed on
+ actid     | integer     | not null     integer code for the action
+ data      | varchar(64) |              any data that went with the action
+ stamp     | timestamp   | not null     timestamp of the action
+Indices: actions_objid_idx,
+         actions_uid_idx
+
+> create table actions(uid int8 NOT NULL, objid int8 NOT NULL, actid int NOT NULL, data varchar(64), stamp timestamp NOT NULL); 
+> create index actions_uid_idx on actions(uid);
+> create index actions_objid_idx on actions(objid);
+
+this table exists to keep track of user actions such as voting on objects (which may effect karma and similar count-based records).  
+
+you can sorta see how it would work based on the schema: say a user looks at a theorem object and likes what they see.  they could click on "yes" for "did you find this theorem useful?" , at which point some count for the object (or owner?) would be incremented, and an entry is made in this table.  now we have the info to refuse to let the user vote again, upon attempting to perform this same action (it will have the same actid) for the same object (same objid), we will see that there is already a matching record in the database.
+
+===========================================================================
+
+             Table "actids"
+  Attribute   |     Type     | Modifier 
+--------------+--------------+----------
+ actid        | int          | default nextval('actids_actid_seq'::text)  action id
+ descr        | varchar(128) | not null  text description
+
+> create sequence actids_actid_seq;
+> create table actids(actid int DEFAULT nextval('actids_actid_seq'), descr varchar(128) NOT NULL);
+
+this is just a type lookup table for actions, so we can list them in a human-readble form.
+
+===========================================================================
+
+	     Table "users"
+  Attribute   |     Type     | Modifier 
+--------------+--------------+----------
+ uid          | bigint       | autoinc    user's unique id
+ joined       | timestamp    | default 'now'  timestamp of time joined PlanetMath
+ username     | varchar(32)  | not null   username (within PlanetMath, should be unique??)
+ firstname    | varchar(64)  |            real first name
+ surname      | varchar(64)  |            real surname
+ email        | varchar(128) | not null   email addy
+ organization | varchar(128) |            organization (university, etc)
+ city         | varchar(128) |            location junk
+ state        | varchar(128) |  
+ country      | varchar(128) | 
+ password     | varchar(32)  |            the user's password
+ count        | integer      | default 0  count of objects this user owns
+ karma        | integer      | default 0  karma value
+ preferences  | varchar(256) |            preferences string
+ showinfo     | varchar(256) |            showinfo string
+
+> create sequence users_uid_seq;
+> create table users (uid int8 PRIMARY KEY DEFAULT nextval('users_uid_seq'), joined timestamp DEFAULT 'now', username varchar(32) NOT NULL, firstname varchar(64), surname varchar(64), email varchar(128) NOT NULL, organization varchar(128), city varchar(128), state varchar(128), country varchar(128), password varchar(32), karma int DEFAULT 0, count int DEFAULT 0, preferences varchar(256), showinfo varchar(256)); 
+
+most of this is intuitive.  however, the last two require some explaining. they are just strings in the database, because i think this minimizes complexity and change required at the schema level in the future. the actual logical contents of the showinfo and prefs will be introduced at the script level.
+
+preferences, i envision to be a string formatted like:
+ 
+ "attribute1=val1,attribute2=val2,..."
+
+and showinfo:
+
+ "field1=threshold1,field2=threshold2,..."
+
+these would be parsed twice, once when the user joins the system, and once each time they log in.  at login time, these fields are parsed into variables in the user's cookie, and can be used by the site as the user moves through it.
+
+preferences are simply layout and other parameters. miscellaneous stuff goes here.  we can define these variables later, they require no changes in the database.
+
+showinfo i split off because it seems to be a logically separate thing, it contains the names of fields in the database like the location fields or the user's real name, paired with the karma level required for other users to be able to view them. this actually DOES depend on what fields are in the table, BUT adding or subtracting fields from the table wouldn't require any changes in the workings of this field.
+
+some examples:
+
+ preferences="frames=1,messagescore=-1,..."
+ showinfo="email=5,country=10,state=20,city=30,firstname=10,surname=100,..."
+
+both of these strings could be generated by the application script. showinfo, for example, could be made from a small text box next to each field the user enters data for, with comma seperated key values being left out ("don't ever show") if the user doesn't enter anything. i envision things like username and  email and country as having some default 
+values. 

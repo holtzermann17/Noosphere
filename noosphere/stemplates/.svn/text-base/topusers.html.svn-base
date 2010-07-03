@@ -1,0 +1,14 @@
+<table width="100%" cellpadding=0 cellspacing=0>
+<tr>
+ <td align="center"><font size="-1">of all time:</font></td>
+</tr>
+<tr>
+ <td><NS:template alltime raw/></td>
+</tr>
+<tr>
+ <td align="center"><font size="-1">last 2 weeks:</a></td>
+</tr>
+<tr>
+ <td><NS:template twoweeks raw/></td>
+</tr>
+</table>

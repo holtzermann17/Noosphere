@@ -1,0 +1,54 @@
+	*** MAP
+The map source is a development blunder and somewhat godawful in a logistical
+sense. It attempts to take an input tex file and parse it to generate a png
+from which it will draw information to create a html style image map for use
+with the output of the origional input tex file.
+
+
+	*** COMPILATION
+The source code has a make file, and can be compiled with the command "make" or
+"make MAP". There are currently no makefile provisions for installation.
+
+
+	*** SYNTAX
+"{$BASE_DIR_TO_MAP_EXECUTABLE}/MAP <input file base name>" or
+	"MAP <input file base name>"
+if MAP has been placed in the $PATH. Input should be a tex file without the
+".tex" at the end. Due to the "latex" execl call within the program, execuation
+should occur in the base directory of the input document.
+
+
+	*** PROPER USE
+The MAP program assumes that the same programs (issuing the same command line
+options) are being used to generate the image to be mapped, as the programms
+being used to create the image for mapping. To see the commands used by MAP look
+in the PRE-MAP.c file in the file_create() function.
+
+GLAS-NOTE: The programs, commands, and command line options I used were taken
+directly from the perl script provided to me, which is why they should work with
+images generated for your site.
+
+
+	*** UPDATES
+08-25-2003 JEI
+Underlining method changed. MAP now outputs commands that make LaTeX use
+	ulem.sty instead of soul.sty because of some wierd things it broke.
+	It cause erronious errors regarding broken fragile commands. 
+Also, previously added support for LaTeX files containing multiple
+	pages. MAP now outputs .map files with the format:
+		[BASE NAME][TWO DIGIT PAGE NUMBER].map
+	E.G.:
+		TerseMathDocument02.map
+	
+01-14-2003 JEI
+Contiguous underline now implemented using soul. However to keep soul from
+	hyphenating words in a phrase that are at the documents edge, each
+	member of an underlined phrase is enclosed in an \mbox{}.
+
+01-13-2003 JEI
+Added output of second tex file with *-HI.tex filename with highlited and
+	underlined regions in place of \htmladdnormallink{} tags.
+Added multiple latex runs to compensate for \ref{},  \eqref{}, and \cite{} tags.
+	Only applied to files in which those tags are found.
+Still no contiguous underlines or underbars of any sort. as they will cause text
+	on the edge of a document to stretch page width.

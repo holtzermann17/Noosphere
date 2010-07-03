@@ -1,0 +1,7 @@
+an object has a place in the name space
+
+any object can have a discussion attached with it (set of messages, threaded) and corrections.
+
+all objects have a unique ID. this is because you can link to everything, and every link requires a unique ID to be resolved independently of the name space.
+
+

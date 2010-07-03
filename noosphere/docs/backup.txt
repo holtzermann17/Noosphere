@@ -1,0 +1,3 @@
+nightly backups of planetmath should be made nightly, this will include the database, perl scripts, and additional content (papers, ebooks, images, etc). back up to a separate physical device (hard drive) on the server machine should be sufficient. in addition server will be on surge protector and ups so hardware failure should not be that big a problem.
+
+fast ethernet (100Mbps) lan with a separate machine could be used later to create a working backup of the entire system nightly so downtime due to failure could be kept to a minimum, this is a consideration for the future.

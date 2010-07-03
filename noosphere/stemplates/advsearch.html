@@ -1,0 +1,73 @@
+<script language="javascript">
+<!--
+  function SetDisabled(array,val) {
+     for (var i = 0; i < array.length; i++) {
+	   with (array[i]) {
+         disabled=val;
+       } 
+	 } 
+  } 
+//-->																		  
+</script>
+
+<form method="get" action="/" name="advsearch">
+ <input type="hidden" name="op" value="search"> 
+<center>
+search for: <br>
+<input type=text name="term" size="60" value=""><br>
+<font size="-2">Groupings and booleans allowed. Ex: "(euler totient and prime) or gauss"</font>
+
+ <br><br>
+ among:
+
+<table>
+<tr>
+ <td bgcolor="#eeeeee" valign="top">
+  <input type="radio" name="what" value="objects" checked
+    OnClick="SetDisabled(document.advsearch.fields,false);
+	         SetDisabled(document.advsearch.types,false); ">math <br>
+ </td>
+  
+ <td>
+  <input type="checkbox" name="types" value="1" checked>theorems
+  <input type="checkbox" name="types" value="5" checked>definitions
+  <input type="checkbox" name="types" value="17" checked>algorithms
+  <br>
+  <input type="checkbox" name="types" value="3" checked>proofs
+  <input type="checkbox" name="types" value="6" checked>results
+  <input type="checkbox" name="types" value="16" checked>synonyms
+  <br>
+  <input type="checkbox" name="types" value="18">papers
+  <input type="checkbox" name="types" value="8">books
+  <input type="checkbox" name="types" value="10" checked>problems
+ </td>
+</tr>
+<tr>
+ <td bgcolor="#eeeeee">
+  <input type="radio" name="what" value="messages" 
+    OnClick="SetDisabled(document.advsearch.fields,false);
+	         document.advsearch.fields[1].disabled=true;
+	         document.advsearch.fields[3].disabled=true;
+	         SetDisabled(document.advsearch.types,true); ">messages
+ </td> <td> </td>
+</tr>
+<tr>
+ <td bgcolor="#eeeeee">
+  <input type="radio" name="what" value="users" 
+   OnClick="SetDisabled(document.advsearch.fields,true);
+            SetDisabled(document.advsearch.types,true); ">users
+ </td> <td> </td>
+</tr>
+</table>
+
+with matching fields:<br>
+ <input type="checkbox" name="fields" value="title" checked>title/subject
+ <input type="checkbox" name="fields" value="keywords" checked>keywords 
+ <input type="checkbox" name="fields" value="data">data
+ <input type="checkbox" name="fields" value="authors">authors
+
+<br><Br>
+ <input type="submit" value=" go! ">
+</center>
+
+</form>

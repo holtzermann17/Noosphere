@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "converting $1"
+cat $1 | sed -e "s/planetmath.org:88/images.planetmath.org/g" > $1.new
+mv $1.new $1
+

@@ -1,0 +1,6 @@
+we will need to modify LaTeX2html fairly extensively. we need to add somtehing to interepret the following 
+
+\Planetmath{namespace.path.to.object}[embed]
+\Planetmath{namespace.path.to.object}{link text}
+
+additionally, every text environment will allow for latex. for example, not only will lessons and specific math objects allow for latex (defn, thm, crl, etc.) but so will messages. work on a latex2html renderer that looks good. this will need to be modular so we can just call a function and hand it some text that is the latex envi to be parsed and have it just spit out the html. should be callable from perl

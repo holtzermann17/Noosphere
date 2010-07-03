@@ -1,0 +1,40 @@
+#!/usr/bin/perl
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use Noosphere::ACL;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+
+  my $dacl=Noosphere::getConfig('dacl_tbl');
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'uid', FROM=>'users'});
+  my @users=Noosphere::dbGetRows($sth);
+
+  # loop through all applicable tables
+  #
+  foreach my $table ('objects','lec','papers','books') { 
+
+  foreach my $user (@users) {
+   
+    # query up all objects the current user owns
+	#
+    my ($rv2,$sth2)=Noosphere::dbSelect($dbh,{WHAT=>'uid',FROM=>$table,WHERE=>"userid=$user->{uid} or userid=-$user->{uid}"});
+	my @objects=Noosphere::dbGetRows($sth2);
+
+    # loop through the objects, adding the default ACLs
+	#
+	foreach my $object (@objects) {
+      print "making default ACL for $object->{uid}, owned by $user->{uid}\n";
+	  Noosphere::installDefaultACL($table,$object->{uid},$user->{uid});
+	}
+   }
+
+  }

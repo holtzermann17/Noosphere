@@ -1,0 +1,13 @@
+<form method="post" action="<NS:template main_url/>">
+
+<NS:template corrections raw/>
+
+<input type="hidden" name="op" value="retractcor"> 
+
+<center>
+  <input type="submit" name="retract" value="retract">
+</center>
+
+<br>
+
+</form>

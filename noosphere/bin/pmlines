@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "with XSL:"
+cat `find /var/www/bin -type f` /var/www/noosphere/lib/*.pm /var/www/noosphere/lib/*.pl /var/www/noosphere/lib/Noosphere/*.pm /var/www/stemplates/*.xsl | wc -l
+echo "without XSL:"
+cat `find /var/www/bin -type f` /var/www/noosphere/lib/*.pm /var/www/noosphere/lib/*.pl /var/www/noosphere/lib/Noosphere/*.pm | wc -l
+

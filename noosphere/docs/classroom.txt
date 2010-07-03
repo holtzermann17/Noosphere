@@ -1,0 +1,3 @@
+the virtual classroom consists of lessons and problems cheifly. the classroom contains lesson objects in a serial fashion. the lessons have problems attached to them (in the same fashion as a proof hangs off a theorem)
+
+

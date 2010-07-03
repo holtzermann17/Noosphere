@@ -1,0 +1,20 @@
+<center>
+
+<table><td>
+
+<form method="post" action="/"> 
+
+<center><font size="+2" color="#ff0000"><b><NS:template error raw/></b></font></center>
+
+Title: <input type="text" name="title" value="<NS:template title qhtml/>" size="40"><br><br>
+
+Description:<br>
+<textarea name="text" rows="8" cols="60"><NS:template text/></textarea>
+
+<center>
+  <input type="submit" name="submit" value="request">
+</center>
+
+<input type="hidden" name="op" value="addreq">
+
+</form>

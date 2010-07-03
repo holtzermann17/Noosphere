@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+ 
+ <!-- site CSS -->
+ <style>
+ <!--
+  A.spell:link    {color:#FF0000; text-decoration:none;}
+  A.spell:visited {color:#FF0000; text-decoration:none;}
+  A.spell:active  {color:#FF0000; text-decoration:none;}
+  A.spell:hover   {color:#ff0000; text-decoration:underline;}
+  A.indicator:link    {color:#000000; text-decoration:none;}
+  A.indicator:visited {color:#000000; text-decoration:none;}
+  A.indicator:active  {color:#000000; text-decoration:none;}
+  A.indicator:hover   {color:#FF0000; text-decoration:none;}
+ //-->
+ </style>
+
+ <!-- meta junk -->
+ <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+ 
+ <!-- the html -->
+ <title><NS:template sitename/> </title>
+ </head>
+ <body BGCOLOR="#FFFFFF" vlink="#0000ff" alink="#ff0000" text="#000000">
+  This is a test of the <NS:template tplsys>"Super-Template"</NS:template> subsystem.
+  Here you can enter values for a few keys, and see how they expand.
+  <p>
+  <form method="GET" action="/">
+   <input type="hidden" name="op" value="<NS:template op qhtml></NS:template>">
+   Here are the current key values:
+
+   <ul>
+    <li>staticsiteaddr is: <NS:template staticsiteaddr>unknown!</NS:template> (<NS:template staticsiteaddr full></NS:template>)
+    <li>test is: <NS:template test></NS:template> (<NS:template test qhtmlfull></NS:template>)
+	<li>testwithdefault is: <NS:template testwithdefault>default</NS:template> (<NS:template testwithdefault qhtmlfull></NS:template>)
+	<li>conciseness is: <NS:template conciseness/> (<NS:template conciseness qhtmlfull/>)
+   </ul>
+
+   test: <input name="test" value="<NS:template test qhtml></NS:template>"><br>
+   testwidthdefault: <input name="testwithdefault" value="<NS:template testwithdefault qhtml>default</NS:template>"><br>
+   conciseness: <input name="conciseness" value="<NS:template conciseness qhtml/>"><br>
+   <p>
+   <input type="submit">
+  </form>
+ </body>
+</html>
+

@@ -1,0 +1,15 @@
+cookies will be used to track logged in users. only one cookie will ever be stored on the users machine. it will have the following information:
+
+ user name (plain text)
+ time first logged in + random garbage (md5 hash)
+
+when a user first logs in, a random string of 32 chars is created and appended to the date, an md5 hash of this value as well as the date is stored in the database in the users's record. A cookie is then put on the users computer.
+
+any time a users access our server and this cookie is displayed, a query will be made to the database to check the validity of the users identity (user is only valid if the hash matches). allow for an option whereby the users can specify an expiration date for their sessions (this can be stored in the database and used when the cookie is sent).
+
+if an invalid cookie is ever encountered, it is removed. this applies to cookies we do not recognize for security purposes.
+
+NOTE: simultaneous logins are impossible under this scenerio (think hard if this is a problem).
+
+according to www.cookiecentral.com a cookie with no expiration date is valid and used until the browser is closed (this may mean its never stored on disk which is good). also cookies with expiration dates are persistant across browser invocations.
+

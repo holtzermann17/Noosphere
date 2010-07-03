@@ -1,0 +1,32 @@
+#!/bin/bash
+
+OS=`uname`
+CFLAGS="-Wno-deprecated -O3"
+#CFLAGS="-Wno-deprecated -O3"
+LDFLAGS="-lpthread"
+
+echo Compiling for $OS
+
+if [ $OS == "Linux" ]; then
+	CFLAGS="$CFLAGS -D__LINUX__"
+elif [ $OS == "FreeBSD" ]; then
+	LDFLAGS="-pthread"
+fi
+
+for file in *.cpp; do
+	#ONAME=`echo $file | cut -f 1 -d '.'`.o
+	ONAME=`basename $file .cpp`.o
+	HNAME=`basename $file .cpp`.h
+	if [ $file -nt $ONAME ]; then
+		echo Compiling $file ...
+		g++ $CFLAGS -c $file
+	else 
+		if [[ -e $HNAME && $HNAME -nt $ONAME ]]; then 
+			echo Compiling $file ...  
+			g++ $CFLAGS -c $file 
+		fi 
+	fi 
+done
+
+echo Linking ...
+g++ *.o -o essexd $LDFLAGS

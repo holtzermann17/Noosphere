@@ -1,0 +1,23 @@
+glossary
+
+contains, at the top level
+
+*) theorems
+  - theorems have corollaaries, things that follow from them and require the theorem in the proof.  these are actually the same objects, in terms of data structures.
+  - proof of the theorem
+*) definitions
+  - results, these are interesting mathematical relationships that follow from the definition
+
+these objects have a specific classification which gives them a position in the heirarchy. this allows for definitions which are different in two different sub-disciplines 
+
+these glossary objects should also have types, literally telling what type of object it is (definition, theorem, etc).  these types would be numerically represented in the database.
+
+----
+
+the glossary objects are definitions, theorems, and from these corollaries and proofs.  these are all essentially the same object (they have the same data fields and hence database schema), so they go in the same table.  however, we will never be doing a search on the LaTeX body of them. for this reason, we can put the LaTeX aside in an even lower level, "LaTeX object" table.
+
+this table will consist of nothing but uid's and a text field, indexed on the uid.  
+
+the glossary object table will be indexed on uid, object name, keywords, and perhaps other factors.
+
+

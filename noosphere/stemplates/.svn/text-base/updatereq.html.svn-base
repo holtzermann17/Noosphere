@@ -1,0 +1,29 @@
+<center>
+
+<table><td>
+
+<form method="post" action="/"> 
+
+<center><font size="+1" color="#ff0000"><b><NS:template error raw/></b></font></center>
+
+<NS:template updater raw/>
+
+<br><br>
+
+<table>
+<td valign="top">
+Object which fills this request:
+</td><td>
+<input type="text" name="identifier" value="<NS:template identifier qhtml/>"><br>
+<font size="-1">(id or canonical name)</font>
+</td></table>
+
+<br>
+
+<center>
+  <input type="submit" name="submit" value="update">
+</center>
+
+<input type="hidden" name="op" value="updatereq">
+
+</form>

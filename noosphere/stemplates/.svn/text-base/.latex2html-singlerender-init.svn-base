@@ -1,0 +1,21 @@
+$LOAD_LATEX_COLOR = "\\usepackage[dvips]{color}";
+$LATEX_COLOR = "\\pagecolor[white]{.7}";
+$NO_NAVIGATION = 1;
+$ADDRESS = "";
+$TRANSPARENT_FIGURES = 0;
+$MATH_SCALE_FACTOR = 1.6;
+$INFO = 0;
+$ANTI_ALIAS = 1;
+$WHITE_BACKGROUND = 1;
+$IMAGE_TYPE = png;
+$MAX_SPLIT_DEPTH = 0;
+$REUSE = 0;
+$NEWDIR_MODE = 'd';
+$NO_SUBDIR = 1;
+$DONT_INCLUDE .= '.pstex_t:';
+
+#$PSTOIMG="$PERL /var/www/pm/bin/pstoimg";
+
+sub meta_information { ""; }
+
+1;

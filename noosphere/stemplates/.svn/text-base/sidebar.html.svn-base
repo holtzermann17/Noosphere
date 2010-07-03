@@ -1,0 +1,15 @@
+<table WIDTH="125" BORDER="0" CELLPADDING="0" CELLSPACING="2">
+	<tr>
+		<td WIDTH="100%">
+			<NS:template login raw/>
+		</td>
+	</tr>
+	
+	<NS:template admin raw/>
+	
+	<tr>
+		<td WIDTH="100%">
+			<NS:template features raw/>
+		</td>
+	</tr>
+</table>

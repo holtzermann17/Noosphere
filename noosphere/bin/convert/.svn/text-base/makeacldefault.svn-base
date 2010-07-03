@@ -1,0 +1,44 @@
+#!/usr/bin/perl
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use Noosphere::ACL;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+
+  my $usertbl=Noosphere::getConfig('user_tbl');
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'uid', FROM=>$usertbl});
+  my @users=Noosphere::dbGetRows($sth);
+
+  foreach my $user (@users) {
+   
+    my $userid=$user->{uid};
+
+	print "$userid : adding \"anyone can read\" rule\n";
+
+    # policy : anyone can read
+    Noosphere::addDefaultUserACL($userid,{default_or_normal=>'d',
+                              user_or_group=>'u',
+                              subjectid=>0,
+                              perms=>{'read'=>1,'write'=>0,'acl'=>0}});
+
+    # look up their self-named group
+    my $groupid=Noosphere::lookupfield(Noosphere::getConfig('groups_tbl'),"groupid","userid=$userid");
+
+	print "$userid : adding \"self-named group ($groupid) members can write\" rule\n";
+
+    # policy : people in self-named group can write
+    Noosphere::addDefaultUserACL($userid,{default_or_normal=>'n',
+                              user_or_group=>'g',
+                              subjectid=>$groupid,
+                              perms=>{'read'=>1,'write'=>1,'acl'=>0}});
+
+  }

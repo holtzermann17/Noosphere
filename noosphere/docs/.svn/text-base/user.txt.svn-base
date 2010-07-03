@@ -1,0 +1,3 @@
+users should be required to have a unique name and valid email address, aditionally we may look into providing user space (http,ftp) and allowing for more information about the usre to be stored and queriable (specific access level allows for identification of users real name, profession, email address, etc..) in the worst case, all a browser should get is an alias.
+
+look into providing some form of one on one communication through the system so that email address are never actually revieled. this prevents spammers and ad companies from targeting our audience.

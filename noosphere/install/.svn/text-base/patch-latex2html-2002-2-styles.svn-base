@@ -1,0 +1,128 @@
+diff -Naur oldsty/babel.perl newsty/babel.perl
+--- oldsty/babel.perl	Mon Mar 15 22:09:00 2004
++++ newsty/babel.perl	Mon Mar 15 22:18:53 2004
+@@ -132,8 +132,8 @@
+ sub do_babel_portuges { &load_babel_file("portuges") }
+ sub do_babel_portuguese { &load_babel_file("portuges") }
+ sub do_babel_romanian { &load_babel_file("romanian") }
+-#sub do_babel_russian { &load_babel_file("russian") }
+-#sub do_babel_russianb { &load_babel_file("russian") }
++sub do_babel_russian { &load_babel_file("russian") }
++sub do_babel_russianb { &load_babel_file("russian") }
+ sub do_babel_scottish { &load_babel_file("scottish") }
+ sub do_babel_slovak { &load_babel_file("slovak") }
+ sub do_babel_slovene { &load_babel_file("slovene") }
+diff -Naur oldsty/russian.perl newsty/russian.perl
+--- oldsty/russian.perl	Wed Dec 31 16:00:00 1969
++++ newsty/russian.perl	Mon Mar 15 22:18:25 2004
+@@ -0,0 +1,99 @@
++# $Id: russian.perl,v 1.0 2004/04/14 
++#
++# russian.perl for russian babel
++# by Boris Bukh <bbukh at gmx dot net>
++
++
++package russian;
++
++print " [russian]";
++
++sub main'russian_translation { @_[0] }
++
++package main;
++
++# Capital letters
++sub do_cmd_CYRA {"&#1040;" . $_[0]}
++sub do_cmd_CYRB {"&#1041;" . $_[0]}
++sub do_cmd_CYRV {"&#1042;" . $_[0]}
++sub do_cmd_CYRG {"&#1043;" . $_[0]}
++sub do_cmd_CYRD {"&#1044;" . $_[0]}
++sub do_cmd_CYRE {"&#1045;" . $_[0]}
++sub do_cmd_CYRYO {"&#1025;" . $_[0]}
++sub do_cmd_CYRZH {"&#1046;" . $_[0]}
++sub do_cmd_CYRZ {"&#1047;" . $_[0]}
++sub do_cmd_CYRI {"&#1048;" . $_[0]}
++sub do_cmd_CYRISHRT {"&#1049;" . $_[0]}
++sub do_cmd_CYRK {"&#1050;" . $_[0]}
++sub do_cmd_CYRL {"&#1051;" . $_[0]}
++sub do_cmd_CYRM {"&#1052;" . $_[0]}
++sub do_cmd_CYRN {"&#1053;" . $_[0]}
++sub do_cmd_CYRO {"&#1054;" . $_[0]}
++sub do_cmd_CYRP {"&#1055;" . $_[0]}
++sub do_cmd_CYRR {"&#1056;" . $_[0]}
++sub do_cmd_CYRS {"&#1057;" . $_[0]}
++sub do_cmd_CYRT {"&#1058;" . $_[0]}
++sub do_cmd_CYRU {"&#1059;" . $_[0]}
++sub do_cmd_CYRF {"&#1060;" . $_[0]}
++sub do_cmd_CYRH {"&#1061;" . $_[0]}
++sub do_cmd_CYRC {"&#1062;" . $_[0]}
++sub do_cmd_CYRCH {"&#1063;" . $_[0]}
++sub do_cmd_CYRSH {"&#1064;" . $_[0]}
++sub do_cmd_CYRSHCH {"&#1065;" . $_[0]}
++sub do_cmd_CYRHRDSN {"&#1066;" . $_[0]}
++sub do_cmd_CYRERY {"&#1067;" . $_[0]}
++sub do_cmd_CYRSFTSN {"&#1068;" . $_[0]}
++sub do_cmd_CYREREV {"&#1069;" . $_[0]}
++sub do_cmd_CYRYU {"&#1070;" . $_[0]}
++sub do_cmd_CYRYA {"&#1071;" . $_[0]}
++
++# lower-case letters
++sub do_cmd_cyra {"&#1072;" . $_[0]}
++sub do_cmd_cyrb {"&#1073;" . $_[0]}
++sub do_cmd_cyrv {"&#1074;" . $_[0]}
++sub do_cmd_cyrg {"&#1075;" . $_[0]}
++sub do_cmd_cyrd {"&#1076;" . $_[0]}
++sub do_cmd_cyre {"&#1077;" . $_[0]}
++sub do_cmd_cyryo {"&#1105;" . $_[0]}
++sub do_cmd_cyrzh {"&#1078;" . $_[0]}
++sub do_cmd_cyrz {"&#1079;" . $_[0]}
++sub do_cmd_cyri {"&#1080;" . $_[0]}
++sub do_cmd_cyrishrt {"&#1081;" . $_[0]}
++sub do_cmd_cyrk {"&#1082;" . $_[0]}
++sub do_cmd_cyrl {"&#1083;" . $_[0]}
++sub do_cmd_cyrm {"&#1084;" . $_[0]}
++sub do_cmd_cyrn {"&#1085;" . $_[0]}
++sub do_cmd_cyro {"&#1086;" . $_[0]}
++sub do_cmd_cyrp {"&#1087;" . $_[0]}
++sub do_cmd_cyrr {"&#1088;" . $_[0]}
++sub do_cmd_cyrs {"&#1089;" . $_[0]}
++sub do_cmd_cyrt {"&#1090;" . $_[0]}
++sub do_cmd_cyru {"&#1091;" . $_[0]}
++sub do_cmd_cyrf {"&#1092;" . $_[0]}
++sub do_cmd_cyrh {"&#1093;" . $_[0]}
++sub do_cmd_cyrc {"&#1094;" . $_[0]}
++sub do_cmd_cyrch {"&#1095;" . $_[0]}
++sub do_cmd_cyrsh {"&#1096;" . $_[0]}
++sub do_cmd_cyrshch {"&#1097;" . $_[0]}
++sub do_cmd_cyrhrdsn {"&#1098;" . $_[0]}
++sub do_cmd_cyrery {"&#1099;" . $_[0]}
++sub do_cmd_cyrsftsn {"&#1100;" . $_[0]}
++sub do_cmd_cyrerev {"&#1101;" . $_[0]}
++sub do_cmd_cyryu {"&#1102;" . $_[0]}
++sub do_cmd_cyrya {"&#1103;" . $_[0]}
++
++sub russian_titles {
++    $ref_title = "\\CYRS\\cyrp\\cyri\\cyrs\\cyro\\cyrk{} \\cyrl\\cyri\\cyrt\\cyre\\cyrr\\cyra\\cyrt\\cyru\\cyrr\\cyrery";
++    $bib_title = "\\CYRL\\cyri\\cyrt\\cyre\\cyrr\\cyra\\cyrt\\cyru\\cyrr\\cyra";
++}
++
++# number sign
++sub do_cmd_No {"&#8470;" . $_[0]} 
++
++if (defined &addto_languages) { &addto_languages('russian') };
++&russian_titles;
++
++# $Log$
++# Revision 1.2  2004/04/10 19:37:10  nscvs
++# Fixed some errors (BB).
++# Modified Files:
++#  	install/patch-latex2html-2002-2-styles
++#  	lib/Noosphere/Charset.pm
++#
++# Revision 1.1  2004/03/16 07:07:06  nscvs
++#  Added Files:
++#  	install/patch-latex2html-2002-2-styles (l2h russian patch)
++#
++# Revision 1.0  2004/04/14 
++#      support for \cyrXXX and \No commands
++
++1;

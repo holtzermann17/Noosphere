@@ -1,0 +1,94 @@
+<table width="100%" cellpadding="2">
+<td>
+
+<form name="newaclform" method="post" action="/">
+  
+  <font size="+1" color="#ff0000"><NS:template error raw/></font>
+
+  <b>Add a new rule:</b> 
+  
+  <br><br>
+
+  <table width="90%" align="center"> 
+
+  <tr><td align="center" bgcolor="#eeeeee">Select a subject</td></tr>
+
+  <tr><td>
+   <i>by group quick-select:</i>
+
+	<br><br>
+
+	<center>
+	
+	Your groups: <NS:template gselect raw/>
+
+	<br>
+
+	</center>
+  
+  </td></tr>
+  
+  <tr><td>
+   <i>or manually</i>:
+
+	<br><br>
+
+	<center>
+	
+      subject (user or group) id or name: 
+      <input type="text" name="subjectid_new" value="<NS:template subjectid_new qhtml/>" size="16">
+
+      <br><br>
+  
+      subject is a: 
+  
+      <input type="radio" name="uog_new" value="u" checked> user 
+      <input type="radio" name="uog_new" value="g"> group 
+
+      <br><br>
+
+	</center>
+
+  </td></tr>
+
+  <tr><td align="center" bgcolor="#eeeeee">Set Permissions</td></tr>
+
+  <tr><td align="center">
+  
+   <br>
+
+   Read: <input type="checkbox" name="read_new" checked> 
+   Write: <input type="checkbox" name="write_new" checked>  
+   ACL: <input type="checkbox" name="acl_new"> 
+
+   <br><br>
+
+  </td></tr>
+
+  <NS:template defaultsel raw/>
+   
+  </table>
+  
+  <center>
+  <input type="submit" name="addrule" value="add rule">
+  </center>
+  
+  <hr>
+  
+  <b>Change existing rules:</b> <br>
+
+  <NS:template acllist raw/>
+
+  <input type="hidden" name="id" value="<NS:template id qhtml/>">  
+  <input type="hidden" name="from" value="<NS:template from qhtml/>"> 
+  <input type="hidden" name="op" value="acledit">    
+
+</form>
+
+ <br>
+
+ <center>
+  (<a href="<NS:template main_url/>/?op=getobj&amp;from=<NS:template from qhtml/>&amp;id=<NS:template id qhtml/>">back to the object</a>)
+ </center>
+
+</td></table>

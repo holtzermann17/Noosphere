@@ -1,0 +1,143 @@
+#!/usr/bin/perl
+
+use DBI;
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use Noosphere::Encyclopedia;
+use Noosphere::Classification;
+
+my $table=Noosphere::getConfig('en_tbl');
+
+# connect to the database
+#
+$dbh=Noosphere::dbConnect;
+  
+print "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
+print "<Noosphere>\n";
+
+my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'*',FROM=>$table,WHERE=>"revid is null and not type=16",'ORDER BY'=>'lower(title)'});
+while (my $row=$sth->fetchrow_hashref()) {
+  
+  print "<record>\n";
+
+  print "  <identifier>Noosphere:$row->{uid}</identifier>\n";
+  print "  <title>$row->{title}</title>\n";
+
+  if (Noosphere::nb($row->{synonyms})) {
+    my @syns=split(/\s*,\s*/,$row->{synonyms});
+    foreach my $syn (@syns) {
+      print "  <synonym>$syn</synonym>\n";
+    }
+  }
+  
+  print "  <url>http://planetmath.org/encyclopedia/$row->{name}.html</url>\n";
+
+  my $typestr=Noosphere::getTypeString($row->{type});
+  print "  <type>$typestr</type>\n";
+  
+  my $cstring=Noosphere::classstring($table,$row->{uid});
+  if (Noosphere::nb($cstring)) {
+    print "  <classification>\n";
+    foreach my $class (split (/\s*,\s*/,$cstring)) {
+	  print "    <category>$class</category>\n";
+    }
+	print "  </classification>\n";
+  }
+  
+  print "  <version>$row->{version}</version>\n";
+
+  if (Noosphere::nb($row->{keywords})) {
+    my @keyws=split(/\s*,\s*/,$row->{keywords});
+    foreach my $keyw (@keyws) {
+      print "  <keyword>$keyw</keyword>\n";
+    }
+  }
+
+  if (Noosphere::nb($row->{related})) {
+    my @rels=split(/\s*,\s*/,$row->{related});
+    foreach my $rel (@rels) {
+	  my $rid=Noosphere::lookupfield($table,'uid',"name='$rel'");
+      print "  <seealso>Noosphere:$rid</seealso>\n";
+    }
+  }
+
+  my $email=getuseremail($row->{userid});
+  my $username=getusername($row->{userid});
+
+  print "  <author>\n";
+  print "     <name>$username</name>\n";
+  print "     <email>$email</email>\n";
+  print "  </author>\n";
+  print "  <preamble>".xmlescape($row->{preamble})."</preamble>\n";
+  print "  <document>".xmlescape($row->{data})."</document>\n";
+  
+  my @children=getchildren($row->{uid});
+  foreach my $child (@children) {
+    print "  <child>$child</child>\n";
+  }
+
+  my @links=getlinks($row->{uid});
+  foreach my $link (@links) {
+    print "  <link>$link</link>\n";
+  }
+
+  print "  <created>$row->{created}</created>\n";
+  print "  <modified>$row->{modified}</modified>\n";
+  
+  print "</record>\n";
+  print "\n";
+}
+print "</Noosphere>\n";
+
+###############################################################################
+
+sub getlinks {
+  my $id=shift;
+  my $table=Noosphere::getConfig('en_tbl');
+
+  my @links=();
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'distinct toid',FROM=>'links',WHERE=>"fromid=$id and fromtbl='$table' and totbl='$table'"});
+  while (my $row=$sth->fetchrow_hashref()) {
+    push @links,"Noosphere:$row->{toid}";
+  }
+  $sth->finish();
+ 
+  return @links;
+}
+
+sub getchildren {
+  my $id=shift;
+  my $table=Noosphere::getConfig('en_tbl');
+
+  my @children=();
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'uid',FROM=>$table,WHERE=>"parentid=$id and revid is null and not type=16"});
+  my @rows=Noosphere::dbGetRows($sth);
+  foreach my $row (@rows) {
+    push @children,"Noosphere:$row->{uid}";
+  }
+  
+  return @children;
+}
+
+sub xmlescape {
+  my $text=shift;
+
+  $text=~s/\&/\&amp\;/g;
+  $text=~s/\</\&lt\;/g;
+  $text=~s/\>/\&gt\;/g;
+  $text=~s/\\/\\\\/g;
+
+  return $text;
+}
+
+sub getuseremail {
+  my $id=shift;
+  return Noosphere::lookupfield('users','email',"uid=$id");
+}
+sub getusername {
+  my $id=shift;
+  return Noosphere::lookupfield('users','username',"uid=$id");
+}

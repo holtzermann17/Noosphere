@@ -1,0 +1,39 @@
+#!/usr/bin/perl
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use Noosphere::Crossref;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+  
+  my $table=Noosphere::getConfig('xref_tbl');
+
+  # query up all the unique links
+  #
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'distinct *',FROM=>$table});
+  my @rows=Noosphere::dbGetRows($sth);
+
+  # wipe out the table
+  #
+  ($rv,$sth)=Noosphere::dbDelete($dbh,{FROM=>$table});
+  $sth->finish();
+
+  # make new links
+  #
+  my $ord=1;
+  foreach my $row (@rows) {
+	Noosphere::xrefAddLink($row->{fromid},$row->{fromtbl},$row->{toid},$row->{totbl});
+    print "$ord. $row->{fromtbl}:$row->{fromid} => $row->{totbl},$row->{toid}\n";
+	$ord++;
+  }
+
+
+  

@@ -1,0 +1,30 @@
+<form method="post" action="/">
+
+<NS:template spell raw/>
+<font size="+1" color="#ff0000"><NS:template error raw/></font>
+
+To: <NS:template sendto raw/><br>
+Subject: <input type="text" name="subject" value="<NS:template subject qhtml/>" size="40"><br>
+Reply:<br>
+<textarea name="body"cols="65" rows="10"><NS:template body/></textarea>
+
+<input type="hidden" name="op" value="replymail">
+<input type="hidden" name="original" value="<NS:template original qhtml/>">
+<input type="hidden" name="id" value="<NS:template id qhtml/>">
+<input type="hidden" name="sendto" value="<NS:template sendto qhtml/>" size="20">
+
+<center>
+
+<input type="submit" name="post" value="send">
+<input type="submit" name="quote" value="quote">
+<input type="submit" name="spell" value="spell">
+
+</center>
+
+<br>
+Original Message:<br>
+<table width="100%" cellpadding="5"><td bgcolor="#ffffff">
+<NS:template disporig raw/>
+</td></table>
+
+

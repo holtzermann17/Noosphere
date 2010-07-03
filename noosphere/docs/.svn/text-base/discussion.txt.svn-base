@@ -1,0 +1,7 @@
+each object has two distinct discussion threads. one for comments on the object (questions, comments, related thoughts) and one strictly for posting problems with the object itself (corrections, modifications, errors). when viewing the object the user should be notified of any outstanding problems.
+
+when a message gets posted to the problem discussion, the author is notified via email (possibly configurable option) and is given some period of time to look into the problem. a cvs style bug tracking/modification scheme could be put in place to allow for versioning. if the user fails to handle the out standing problem in some period of time, they lose ownership of the object to the person who posted the correction. if necessary a moderator or trusted admin can deal with it personally.
+
+for the comment discussion, people will be forced to have an account to make posts. logged in users should have the option of rating the posts (via some simple scheme that addresses issues with spammers and quality control, look into how slashdot works). additionally, an option should exist for a user to "watch" a discussion on an object, where by the posted messages are forwarded on to his email address (look into automating the reply process so users can post to discussions via email, this will require security issues)
+
+.

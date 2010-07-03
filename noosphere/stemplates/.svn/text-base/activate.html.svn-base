@@ -1,0 +1,37 @@
+Now all you need to do to activate your account is set a password:
+<p>
+<font COLOR="#FF0000" SIZE="+1"><NS:template error raw/></font>
+<center>
+<table BORDER="0" CELLPADDING="2" CELLSPACING="0">
+ <form METHOD="post" ACTION="/">
+  <tr>
+   <td ALIGN="RIGHT">
+    <small>
+     password
+    </small>
+   </td>
+   <td>
+    <input TYPE="password" name="p1" SIZE="16" MAXLENGTH="32">
+   </td>
+  </tr>
+  <tr>
+   <td ALIGN="RIGHT">
+    <small>
+     password (again)
+    </small>
+   </td>
+   <td>
+    <input TYPE="password" name="p2" SIZE="16" MAXLENGTH="128">
+   </td>
+  </tr>
+  <tr>
+   <td COLSPAN="2" ALIGN="CENTER">
+    <input TYPE="hidden" NAME="hash" VALUE="<NS:template hash qhtml/>">
+    <input TYPE="hidden" NAME="op" VALUE="activate">
+	<input TYPE="hidden" NAME="setpass" VALUE="1">
+    <input TYPE="submit" VALUE="activate account">
+   </td>
+  </tr>
+ </form>
+</table>
+</center>

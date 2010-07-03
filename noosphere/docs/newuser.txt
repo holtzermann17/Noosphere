@@ -1,0 +1,7 @@
+we will follow kuro5hin's example with validating new users.  when a user applies for an account, we generate a unique hash based on their information and the time of submision (this gets stored in a table). we send them an email with this unique hash, and a URL back to our site where they verify they recieved the hash.  
+
+this procedure verifies the email address, so that should take care of most spammers.   
+
+getting a bunch of spam accounts then would require someone to own a large number of valid email accounts, perhaps their own machine.  this is doable, but more work...
+
+

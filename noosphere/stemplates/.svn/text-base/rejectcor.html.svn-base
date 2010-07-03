@@ -1,0 +1,9 @@
+<form method="post" action="<NS:template main_url/>">
+
+<NS:template corrections raw/>
+
+<input type="hidden" name="op" value="rejectcor"> 
+
+<center>
+  <input type="submit" name="post" value="reject">
+</center>

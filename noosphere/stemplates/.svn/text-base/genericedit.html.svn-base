@@ -1,0 +1,28 @@
+<form method="post" action="/" enctype="multipart/form-data" accept-charset="UTF-8">
+ <font color="#ff0000" size="+1"><NS:template error raw/></font>
+
+  <NS:template editor raw/>
+  
+  Classification (See <a target="planetmath.popup" href="http://<NS:template staticsiteaddr/>/msc">MSC</a>):
+  <br>
+  <input type="text" name="class" value="<NS:template class qhtml/>" size="75">
+  <br>
+  <font size="-2">
+  (examples: "msc:11F02", "msc:11F02, msc:11F03, msc:05R16". "msc:" can be omitted, assumed by default.)
+  </font>
+
+ <input TYPE="hidden" NAME="id" VALUE="<NS:template id qhtml/>">
+ <input TYPE="hidden" NAME="op" VALUE="edit">
+ <input TYPE="hidden" NAME="from" VALUE="<NS:template from qhtml/>">
+
+ <br><br>
+ 
+ <center>
+ <input TYPE="submit" name="post" VALUE="save changes">
+ </center>
+  
+ <br>
+ 
+ <NS:template fmanager raw/>
+
+</form>

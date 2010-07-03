@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# this script will run vim on the tex file given by $1 and produce a 
+# sytnax-highlighted HTML file ($2)
+#
+# this serves as reference code for the src plugin in Latex.pm
+#
+
+/usr/bin/vim $1 +:so\ \/usr/share/vim/vim60/syntax/2pmhtml.vim +:w\!\ $2 +:q +:q 2>/dev/null
+

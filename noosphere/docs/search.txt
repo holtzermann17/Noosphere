@@ -1,0 +1,14 @@
+we want searching to primarily be done on keyword lists.  these will be supplied by the author of the object.
+
+but we also want to be able to find objects that mention something that was neglected in the keyword list. to do this, we want to preprocess the LaTeX of an object, and pull out all plaintext.  we can then run this through some more filters to pull out punctuation and weird characters, as well as trivial english words. (actually we just want to saerch on nouns, if we could somehow pull out verbs and prepositions and adjectives, that would be favourable).  this slimmed down text would then also be searched, weighted less than the keywords.
+
+we also want the ability to search on particular types (theorems, definitions, proofs).  
+
+--------
+
+consider two fields: keyword, and digest.  keyword is the raw keywords list as entered by the author, digest is described above as generated from the body text. 
+we do one search first, on the keyword field.  we use the facilities of the database to get numerical scores for these search results.  we hold these.  then do a search on the digest, and hold the numerical scores for these results.
+
+now, we adjust up the keyword scores, by perhaps some multiplicative factor, and maybe adjust down the digest scores.. then we take the union of those two selects, and add the scores for those results that appeared twice (the intersection).
+
+this should properly keep keywords as the most "important" search field, but not neglect hits from the body of an object.

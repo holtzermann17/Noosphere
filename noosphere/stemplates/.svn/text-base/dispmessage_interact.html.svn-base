@@ -1,0 +1,3 @@
+<center>
+  <a href="<NS:template main_url/>/?op=postmsg&amp;id=<NS:template id query/>&replyto=<NS:template replyto query/>">reply</a>
+</center>

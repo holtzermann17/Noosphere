@@ -1,0 +1,14 @@
+User "pm"
+Group "pm"
+
+PidFile "/var/www/noosphere/bin/run/essexd.pid"
+LogFile "/var/www/noosphere/log/essex.log"
+
+ListenUnix true
+UnixSocket "/var/www/noosphere/bin/run/essex.sock"
+
+PollInterval 15
+
+ListenInet false
+BindAddress 0.0.0.0
+ListenPort 1723

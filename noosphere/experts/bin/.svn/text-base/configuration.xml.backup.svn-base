@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<graph-entity-feeders>
+		<graph-entity-feeder class="edu.emory.library.gsoc.experts.impl.feeders.SQLFeeder">
+			<connection driver="com.mysql.jdbc.Driver" db="jdbc:mysql://localhost:3307/pm" user="pm" pass="groupschemes"/>
+			<mapping>
+				<queries>
+					<query sql="select distinct users.uid, users.username from users, objects where users.uid=objects.userid" 
+						   marker="o=t" id="1" name="2">
+						<edges sql="(select ownerlog.userid, corrections.userid, 1 + case when object_rating.value IS null then 0 else object_rating.value / 4 end from objects, ownerlog left JOIN object_rating on object_rating.userid = ownerlog.userid, corrections where ownerlog.objectid = objects.uid and (action='o' or action='t') and objects.uid = corrections.objectid and corrections.accepted=1 and corrections.filed &lt; ownerlog.ts and corrections.filed &gt;= (SELECT if(max(l.ts) IS null,0.0,max(l.ts)) from ownerlog l where l.ts &lt; ownerlog.ts AND (l.action='o' or l.action='t') and l.objectid = corrections.objectid) order by ts) union all (select objects.userid, corrections.userid, 1 + case when object_rating.value IS null then 0 else object_rating.value / 4 end from objects left JOIN object_rating on object_rating.userid = objects.userid, corrections where objects.uid = corrections.objectid and corrections.accepted=1 and corrections.filed &gt; (SELECT if(max(l.ts) IS null,0.0,max(l.ts)) from ownerlog l where (l.action='o' or l.action='t') and l.objectid = corrections.objectid))" 
+							local-id="1" remote-id="2" weight="3"/>
+						<duplicates remove="true"/>
+					</query>
+					<query sql="select distinct users.uid, users.username from users, corrections where users.uid=corrections.userid"
+					       marker="c=t" id="1" name="2">
+						<edges sql="(select ownerlog.userid, corrections.userid, 1 + case when object_rating.value IS null then 0 else object_rating.value / 4 end from objects, ownerlog left JOIN object_rating on object_rating.userid = ownerlog.userid, corrections where ownerlog.objectid = objects.uid and (action='o' or action='t') and objects.uid = corrections.objectid and corrections.accepted=1 and corrections.filed &lt; ownerlog.ts and corrections.filed &gt;= (SELECT if(max(l.ts) IS null,0.0,max(l.ts)) from ownerlog l where l.ts &lt; ownerlog.ts AND (l.action='o' or l.action='t') and l.objectid = corrections.objectid) order by ts) union all (select objects.userid, corrections.userid, 1 + case when object_rating.value IS null then 0 else object_rating.value / 4 end from objects left JOIN object_rating on object_rating.userid = objects.userid, corrections where objects.uid = corrections.objectid and corrections.accepted=1 and corrections.filed &gt; (SELECT if(max(l.ts) IS null,0.0,max(l.ts)) end from ownerlog l where (l.action='o' or l.action='t') and l.objectid = corrections.objectid))" 
+							local-id="2" remote-id="1" weight="3"/>
+						<duplicates remove="true"/>
+					</query>
+				</queries>
+			</mapping>
+		</graph-entity-feeder>
+		
+	</graph-entity-feeders>
+
+	
+	<ranking-producers>
+		<ranking-producer id="hits-rank" class="edu.emory.library.gsoc.experts.impl.producers.HITSRanker">
+			<hub marker="o=t"/>
+			<authority marker="c=t"/>
+			<values>
+				<value class="edu.emory.library.gsoc.experts.impl.producers.valuers.CombinedValue">
+					<expression value="hub + auth" />
+				</value>
+			</values>
+		</ranking-producer>
+		
+		<!-- 
+			<ranking-producer id="hits-rank-jung" class="edu.emory.library.gsoc.experts.impl.producers.HITS_JUNG_Ranker">
+				<hub marker="o=t"/>
+				<authority marker="c=t"/>
+			</ranking-producer>
+		 -->
+		<!-- 
+		<ranking-producer id="survey-rank" class="edu.emory.library.gsoc.experts.impl.producers.SQLRanker">
+			<connection driver="com.mysql.jdbc.Driver" db="jdbc:mysql://localhost:3307/pm" user="pm" pass="groupschemes"/>
+			<queries>
+				<query sql="SELECT objects.userid, avg(total) from objects, (select rated_object.objectid, rated_object.user_id, sum(answers.answer) total from objects, rated_objects, answers where objects.uid = rated_objects.objectid and rated_objects.id = answers.ratedobjectid group by rated_objects.objectid, rated_objects.user_id) a where a.objectid = objects.uid group by objects.userid" id="1" value="2"/>
+			</queries>
+		</ranking-producer>
+		-->
+		<ranking-producer id="pm-rank" class="edu.emory.library.gsoc.experts.impl.producers.SQLRanker">
+			<connection driver="com.mysql.jdbc.Driver" db="jdbc:mysql://localhost:3307/pm" user="pm" pass="groupschemes"/>
+			<queries>
+				<query sql="SELECT c.uid, c.score from users c" id="1" value="2"/>
+			</queries>
+		</ranking-producer>
+		
+	</ranking-producers>
+	
+	<ranking-analysers>
+		<ranking-analyser id="hits-rank" class="edu.emory.library.gsoc.experts.impl.analysers.StepOrderingAnalyser">
+		</ranking-analyser>
+		<!-- 
+			<ranking-analyser id="hits-rank-jung" class="edu.emory.library.gsoc.experts.impl.analysers.StepOrderingAnalyser">
+			</ranking-analyser>
+		<ranking-analyser id="survey-rank" class="edu.emory.library.gsoc.experts.impl.analysers.StepOrderingAnalyser">
+		</ranking-analyser>
+		-->
+		
+		<ranking-analyser id="pm-rank" class="edu.emory.library.gsoc.experts.impl.analysers.StepOrderingAnalyser">
+		</ranking-analyser>
+	</ranking-analysers>
+	
+	<ranking-evaluators>
+		<!--
+		<ranking-evaluator class="edu.emory.library.gsoc.experts.impl.evaluators.PearsonEvaluator"
+				points="10|20|50|100|500|1000">
+			<ranking id="hits-rank"/>
+			<ranking id="survey-rank"/>
+		</ranking-evaluator>
+	
+		<ranking-evaluator class="edu.emory.library.gsoc.experts.impl.evaluators.PearsonEvaluator"
+				points="10|20|50|100|500|1000">
+			<ranking id="pm-rank"/>
+			<ranking id="survey-rank"/>
+		</ranking-evaluator>
+		
+		<ranking-evaluator class="edu.emory.library.gsoc.experts.impl.evaluators.PearsonEvaluator"
+				points="10|20|50|100|500|1000">
+			<ranking id="survey-rank"/>
+			<ranking id="pm-rank"/>
+		</ranking-evaluator>
+		-->	
+	</ranking-evaluators>
+	
+	<ranking-savers>
+		<!--
+		<ranking-saver class="edu.emory.library.gsoc.experts.impl.savers.FileSaver">
+			<graph file="graph.out"/>
+			<rank-values>
+				<rank id="hits-rank" file="values.out"/>
+				<rank id="survey-rank" file="values-survey.out"/>
+				<rank id="pm-rank" file="values-pm.out"/>
+			</rank-values>
+			<rank-positions>
+				<rank id="hits-rank" file="positions.out"/>
+				<rank id="survey-rank" file="positions-survey.out"/>
+				<rank id="pm-rank" file="positions-pm.out"/>
+			</rank-positions>
+		</ranking-saver>
+		-->
+		<ranking-saver class="edu.emory.library.gsoc.experts.impl.savers.PMSaver">
+			<connection driver="com.mysql.jdbc.Driver" db="jdbc:mysql://localhost:3307/pm" user="pm" pass="groupschemes"/>
+			<rank-positions>
+				<rank id="hits-rank" file="PMUsers.csv"/>
+			</rank-positions>
+		</ranking-saver>
+	</ranking-savers>
+	
+</configuration>

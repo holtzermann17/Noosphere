@@ -1,0 +1,9 @@
+<html><body bgcolor="#ffffff">
+<center>
+<font face="sans-serif">
+<font size="+1">word<font> <font size="+2">'<NS:template word/>'</font>
+<br><br>
+<font size="+1"><NS:template result raw/></font>
+</font>
+</center>
+</body></html>

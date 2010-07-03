@@ -1,0 +1,384 @@
+Last modified:  Fri Feb  6 05:51:58 UTC 2004 by apk
+
+(scroll to bottom for DONE items)
+
+============================= Documentation Items ============================
+
+* ACL and multiple editing guide.
+  
+  (Wed May 22 02:38:17 UTC 2002, apk)
+
+* PlanetMath style guide
+  Note: this has been started, we are going to do this as a collaborative 
+  document.
+
+  (Wed May 22 02:38:17 UTC 2002, apk)
+
+* PlanetMath-centric intro to LaTeX.  Maybe not separate from style guide?
+
+  (Wed May 22 02:38:17 UTC 2002, apk)
+
+========================== Layout and interface items =======================
+
+* Pseudo-html user comments (like k5)
+
+  (Sun May  5 03:14:00 EDT 2002, lbh)
+
+* Add ability to change how things are sorted.  It'd be nice to have a
+  generalized sorting widget.  To start with, we want this on the "your objects"  page.
+
+  (Fri Apr  5 07:25:01 UTC 2002, apk)
+
+* Finish conversion from HTML to XSL templates.
+
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+
+* We currently have routines to print out the "long form" of a classification,
+  human-readably.  What we need is a short form, perhaps one that just uses 
+  the top-level MSC.  This would be done by looking at the first (ord=0) 
+  classification for an object.  These need to then be printed on the search
+  results screen, and in the encyclopedia alphabetical listing.
+
+  (Thu Feb 28 12:53:14 UTC 2002, apk)
+  
+* A generalized paging routine.  It should take an SQL query, a function,
+  and the params and user_info hashes, run the query with appropriate offset
+  and limit, call the given function on each row, and output the result with
+  page controls.
+
+  (Thu Feb 28 09:39:50 UTC 2002, lbh)
+
+============================ Infrastructural items ===========================
+
+* Allow collaboration objects to serve as "site documentation".  The first 
+  component of this is the (existing) collaboration system.  The second is 
+  data marking certain objects as site documentation (a flag).   The third is
+  some demarcation of collaboration objects as site documentation.  The fourth
+  is a site documentation section which lists these objects.  And the fifth 
+  would be a system whereby a user can request a collaboration object become
+  site documentation, and/or an admin can grant this status.
+
+  Note: Items one through three are already done.
+
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+
+* Need a link policy system, so that users can control bad automatic linking
+  behavior from the source, rather than only by manual link controls at every
+  occurrence.  The policy would mostly allow/forbid linking to/from particular
+  subject areas, denoted in terms of MSC.
+
+  More info, including a proposed link policy syntax, can be found in the 
+  PlanetMath thesis.
+
+  Note: this system is the first "half" of an overlinking prevention system.
+  
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+
+* Need a bad link reporting system.  this system should be usable by logged in 
+  or non-logged-in users to get the maximum amount of attention.  The user 
+  should be able to click on "report bad links" on the bottom of the page, at 
+  which point they are taken to a screen listing the links in the entry.  They
+  should be able to request to "zap" links entirely, or select a better 
+  alternative from a set of linking possibilities (as in for homonyms).  These 
+  actions then result in confirmation-notices sent to the entry author before 
+  any actual action is taken.
+
+  This system is the other "half" of an overlinking prevention system, the
+  first half of which is the previous TODO item.
+
+  (Sun May 19 03:11:31 UTC 2002, apk)
+
+* Implement a title index daemon, which holds the index in-memory.  The auto-
+  linker would talk to this daemon over a socket, sending it a list of words
+  and getting a back list of arrays holding entry information for first-word
+  matches.  This will enable us to stop generating a first-word term
+  hash from the entire corpus each time linking is done. The fact that this is
+  done each time really makes the linking O(n), where n is the number of entries
+  in the encyclopedia.  With the daemon keeping a hash in-memory, the linking
+  will be O(m), with m the number of words in the entry, as it should be.
+
+  (Wed Mar  6 20:49:35 UTC 2002, apk)
+
+* A better LaTeX parser.
+
+  Note: Possibly integrate LaTeX:TOM (by apk).
+
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+  (Sun May  5 03:14:00 EDT 2002, lbh)
+
+* Need a link abstraction system. instead of links being URLs to the actual 
+  destination entry, links should go to a planetmath subroutine that can 
+  determine the destination based upon a variety of factors, and redirect the 
+  user to the best one.
+
+  UPDATE, apk: is this really so useful?
+
+  (Sun May 19 03:11:31 UTC 2002, apk)
+
+* Think of a way to do disambiguation across MSC areas.  For instance, "domain"
+  is usually used in the function sense (MSC 03), yet it will be invoked in 
+  other MSC areas.  In this case, the linking behavior becomes random.  What 
+  is needed is a way to link to a most popular, or most basic sense.  Perhaps
+  we could just make 03 the the "default", or order the areas by how elementary
+  they are.  Solutions where we don't have to input more data, though, are 
+  preferable.
+
+  (Fri Apr  5 07:25:01 UTC 2002, apk)
+  
+* Rework the query repair system.  Note that it will never be invoked if as
+  few as two words are searched for and one is misspelled, but the second 
+  has occurrences.  What should happen is that the query is /always/ checked 
+  for misspellings.  If there are any, there are two possible behaviors: (1) 
+  repair the query and issue it in the background.   If there are more results
+  than for the uncorrected query, suggest to the user the repaired query 
+  (perhaps cache the results somehow so the search doesn't have to be 
+  deployed again). (2) always suggest the repaired query (this might get 
+  annoying, depending on how big the lexicon is).   
+
+  Problems with (2) could be combatted by never suggesting corrections for 
+  words which exist in the corpus somewhere.
+
+  (Sun Jan 12 20:27:30 EST 2003 by apk)
+
+* Implement search result weighting based on # of links pointing to an entry.
+  This should help get the most "basic", "important" entries to the top.  
+
+  Note: this requires a link-analysis search engine, so is a big item.  
+
+  (Wed Mar  6 20:49:35 UTC 2002, apk)
+
+* Be smarter about changes in synonyms and defines fields.  Currently we just
+  re-construct the defines and synonyms every time there's an edit, which 
+  involves title invalidating each of them.  This can lead to tens or hundreds
+  of spurious invalidations.
+  
+  (Sat Mar  2 01:06:42 UTC 2002, apk)
+
+* Keep "related" link information in the links table.  Generalize links table.
+  Display related as well as content links in the "references to" page.
+
+  (Fri Mar  1 01:06:30 UTC 2002, apk)
+
+* A synonym system for "defines" entries.  This requires further generalization
+  of the schema for titles/synonyms/defines and their mappings to concepts.  
+  Concept IDs should actually be stored in the database instead of calculated
+  on-the-fly in the linking system.  One neat thing this will enable is a count
+  of discrete "concepts" in the encyclopedia, which is significantly greater
+  than the number of entries. 
+
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+============================= Data provider items: ==========================
+
+* More complete source metadata format for the Open Archive.
+
+  (Tue Apr  1 23:02:02 UTC 2003, apk)
+
+* Download of ps/pdf of entries.
+
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+
+* "Print view" of entries.
+
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+
+* Enrich offline browsable snapshots so they contain correction information, 
+  and contributors who only filed corrections.
+
+  (Fri Feb  6 05:51:58 UTC 2004, apk)
+
+=============================================================================
+                                     DONE
+=============================================================================
+
+* Integrate a faster, newer search engine (i.e., ESSEX).
+
+  (Done: late 2003, apk)
+  (Tue Apr  1 23:02:02 UTC 2003, apk)
+
+* Some handling of theorems that contain their own proofs (perhaps a flag).
+  NOTE: this is now partially implemented; we still need to put the flag on the 
+  user object editing screen.
+
+  (Done: sometime in mid 2003, apk)
+  (Thu Feb 28 12:53:14 UTC 2002, apk)
+  
+* IMPORTANT: We're out of space for "also defines" and "synonym" fields.  These
+  should be changed to a text field.
+
+  (Done: Fri Jun  7 10:31:40 UTC 2002  apk)
+  (Fri Apr  5 07:25:01 UTC 2002, apk)
+
+* "random entry" link in features.  This would take the user to a random 
+  encyclopedia entry. (maybe better placed on the encyclopedia index page)
+
+  (Done: Sun Jan 12 22:16:25 EST 2003)
+  (Thu Mar  7 01:51:17 UTC 2002, apk)
+
+* Fix the quoting functionality (for messages).  This is pretty badly broken.
+
+  (Done: ?, apk)
+  (Sun Mar  3 13:06:32 UTC 2002, apk)
+
+* A link to view the preamble for an entry (or perhaps add this to the source
+  view.)
+
+  (Done: Sat Jun 15 22:36:28 UTC 2002, apk)
+  (Sat Mar  2 18:46:44 UTC 2002, apk)
+
+* Need a confirmation-notice system. this system should allow the deferred 
+  performance of various actions (like accepting a symmetric "related" link) 
+  until the user selects from a set of possible options (i.e. "yes" or "no").  
+  This could concievably take the form of an augmentation to the notices 
+  system.
+
+  (Done: Fri Jul 26 16:19:51 UTC 2002, apk)
+  (Sun May 19 03:11:31 UTC 2002, apk)
+
+* Logging for object modifications.  This includes diffs of all changes to 
+  the text body.  We can scrap the current version system and just let people
+  view diff histories (current system is a big hack and makes the schema ugly.)
+
+  IMPORTANT: we need logging now, for object owner history (As in adoption.)
+
+  (Wed May 29 17:28:29 UTC 2002, apk)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+  
+* Set up an Open Archives interface.  Come up with some PlanetMath schemas 
+  and/or crosswalks to standard schemas.  We should have at least Dublin
+  Core for the OAI interface.
+
+  (Done, Fri May 24 12:27:03 UTC 2002, apk)
+  (Wed May 22 02:38:17 UTC 2002, apk)
+
+* Need a generalized way of listing, on the user info page, all of the objects
+  (corrections and otherwise) a user has authored.
+
+  (Done, Fri May 24 12:27:03 UTC 2002, apk)
+  (Mon Apr 15 20:55:29 UTC 2002, apk)
+  
+* Paging on the user list page.
+
+  (Done, Fri May 10 22:58:09 UTC 2002, apk)
+  (Wed Apr 17 01:06:08 UTC 2002, apk)
+  
+* Finish putting in more types (result, conjecture, example...).  
+
+  (Done, Wed Apr 17 01:06:08 UTC 2002, apk)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+* classification nag for new entries.  This can be done smartly: that is, only
+  when there is an identical title in the system.  Perhaps we should force
+  classification when this is the case: this would make the linking entirely
+  predictable, and never ambiguous.
+
+  Note: this was implemented as a warning-- it shows up for all editing, not
+  just new entries.
+  
+  (Done: Wed Apr 17 01:06:08 UTC 2002, apk)
+  (Sat Mar  2 01:30:48 UTC 2002, apk)
+  
+* Generalized object watch widget (steal from encyclopedia objects).  Place on
+  all objects (news, requests, polls...).
+
+  (Done: Mon Apr 15 14:51:55 UTC 2002, apk) (actually done yesterday)
+  (Fri Mar  8 14:43:41 UTC 2002, apk)
+
+* Discussions for corrections.  This won't be hard to put in.
+
+  (Done: Mon Apr 15 14:51:55 UTC 2002, apk) (actually done yesterday)
+  (Fri Apr 12 16:24:03 UTC 2002, apk)
+
+* note that the pseudo-LaTeX PM commands can only take plain text contents (no
+  LaTeX commands)
+
+  (Done: Sun Apr  7 16:00:24 UTC 2002, apk)
+  (Thu Mar  7 17:24:00 UTC 2002, apk)
+
+* make a cron job to clean out the cache/temp dir.  This should remove 
+  directories that are a day old or so.
+
+  (Done: Sun Apr  7 15:52:35 UTC 2002, apk)
+  (Thu Mar  7 18:16:00 UTC 2002, apk)
+  
+* Some dictionary functionality.  For example: pronunciation (and some
+  consensus on how to specify it, there may be existing standards); wav
+  files as examples of pronunciation; formal specification of accepted
+  usage (e.g., plural forms, etc.); specification of how a term functions
+  (e.g. noun, adjective, verb, etc.); and maybe more.  Most of these are
+  simply additional text associated with an object (and additional form
+  controls for adding/editing them), but some sort of stylistic conventions
+  for each would also be needed.
+
+  (Done: Sat Mar  2 23:29:37 UTC 2002, lbh)
+  (Sat Mar  2 18:50:51 UTC 2002, lbh)
+
+* IMPORTANT: Let's get some LaTeX error reporting.  In fact, we should have
+  some generalized method of reporting errors back from rendering front-ends.
+
+  (Done: Sun Apr  7 15:12:49 UTC 2002, apk)
+  (Fri Mar 22 04:11:43 UTC 2002, apk)
+  
+* Object orphaning and adopting.  It will be nice to have the above logging 
+  so that it preserves a history of how objects have changed hands. 
+
+  NOTE: the logging portion still needs to be done... but we can roll this 
+  into generic logging for all changes.
+
+  (Fri Mar 22 04:11:43 UTC 2002, apk) (actually done around March 6)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+* See about coding up an actual inverted index for the search engine (current
+  system stores the information in the database, so we've got O(log n) lookups
+  instead of the O(1) we'd get from an inverted index + a hash for the 
+  dictionary word -> id mapping.)
+
+  (Done: Tue Mar 19 20:07:07 UTC 2002, apk) (actually done a while ago)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+* Research and implement a system for query spell correct.  Perhaps this should
+  be done using n-grams and a circular (permuted) index?  What about the query
+  lexicon?  Should we generate this from the text, or from commonly misspelled
+  query terms?
+
+  NOTE: Implemented using n-gram index for coarse search and Levenshtein (edit)
+  distance for the precise search.  The system works best for single-word
+  queries which are misspelled, but exist in the lexicon.  The lexicon was 
+  formed from the MSC, and all of the titles in the encyclopedia.
+
+  (Done: Tue Mar 19 20:07:07 UTC 2002, apk) (actually done week of march 6)
+  (Wed Mar  6 20:49:35 UTC 2002, apk)
+  
+* Allow discussion under request objects.  This would be extremely useful.
+	
+  (Done: Fri Mar  8 01:34:03 UTC 2002, apk)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+* Page widget needs to be present on user corrections screen.
+
+  (Done: Thu Feb 28 09:27:29 UTC 2002, lbh)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+	
+* User preference for page sizes for various screens (esp "Your Objects").
+
+  (Done: Thu Feb 28 08:31:21 UTC 2002, lbh)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+* Revise template system, and change all of PM to use it
+
+  (Done: Wed Feb 27 12:44:40 UTC 2002, lbh)
+  (Wed Feb 27 05:59:41 UTC 2002, lbh)
+
+* Pull out context of search words and bold them in search results text.
+
+  (Done: Wed Feb 27 12:31:52 UTC 2002, apk)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+
+* Add a list of "defines" (and maybe synonyms) to search results items for
+  encyclopedia objects, and highlight search terms in them. This will enable 
+  the user to more easily see that a result with a different title is actually
+  relevant to their search.
+
+  (Done: Wed Feb 27 12:31:52 UTC 2002, apk)
+  (Tue Feb 26 19:37:11 UTC 2002, apk)
+

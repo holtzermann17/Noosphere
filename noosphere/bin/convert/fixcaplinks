@@ -1,0 +1,33 @@
+#!/usr/bin/perl
+
+#
+# this script cleans up improperly linked entries that were produced by a 
+# linking bug that kept links from happening to titles that start with a 
+# capital letter.  the script queries up all such titles, and does a title
+# invalidate for them.
+#
+
+use DBI;
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Crossref;
+
+# connect to the database
+#
+$dbh=Noosphere::dbConnect;
+
+my $table=Noosphere::getConfig('en_tbl');
+
+my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'distinct title',FROM=>Noosphere::getConfig('index_tbl'),WHERE=>"title~'^[A-Z].*'"});
+
+my $count=0;
+while (my $row=$sth->fetchrow_hashref()) {
+  print "Invalidating for '$row->{title}'\n";
+  Noosphere::xrefTitleInvalidate($row->{title},$table);
+  $count++;
+}
+
+print "\ninvalidated $count titles.\n";
+

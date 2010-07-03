@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+
+# this script deletes 
+
+use DBI;
+use lib '/var/www/noosphere/lib';
+
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::Config;
+use Noosphere::DB;
+
+$dbh = Noosphere::dbConnect;
+
+my $table = Noosphere::getConfig('results_tbl');
+my $keep = Noosphere::getConfig('keep_search_results');
+
+my $dbms = Noosphere::getConfig('dbms');
+
+my ($rv,$sth) = Noosphere::dbDelete($dbh,{FROM=>$table,WHERE=>"now()-ts > interval '$keep'"}) if $dbms eq 'pg';
+my ($rv,$sth) = Noosphere::dbDelete($dbh,{FROM=>$table,WHERE=>"ts + interval $keep < now()"}) if $dbms eq 'mysql';
+
+$sth->finish();
+

@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+# outstanding correction nag "daemon" (should get called by cron periodically)
+#
+
+use DBI;
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::Corrections;
+use Noosphere::Orphan;
+use Noosphere::Config;
+use Noosphere::DB;
+
+$dbh = Noosphere::dbConnect;
+Noosphere::initNoosphere();
+
+my @list=Noosphere::getNagList();
+
+#open STDERR, ">/var/www/logs/error-outstandingcor";
+#open(OLDOUT, ">&STDOUT");
+#open STDOUT, ">>/var/www/logs/stdout-outstandingcor";
+
+foreach my $item (@list) {
+  print "checking $item->{title} ($item->{id}), filed $item->{filed}, $item->{elapsed} elapsed \n";
+  Noosphere::sendNag($item);
+  Noosphere::autoOrphan($item);
+}
+
+#open(STDOUT, ">&OLDOUT");
+  

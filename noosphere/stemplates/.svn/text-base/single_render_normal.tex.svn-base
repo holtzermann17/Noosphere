@@ -1,0 +1,13 @@
+\documentclass[12pt]{article}
+\pagestyle{empty}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{color}
+
+\begin{document}
+
+$<NS:template math raw/>$
+
+\end{document}

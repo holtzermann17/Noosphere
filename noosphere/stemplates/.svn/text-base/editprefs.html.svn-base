@@ -1,0 +1,11 @@
+<table width="100%">
+<form method="post" action="<NS:template main_url/>/?op=editprefs">
+<tr><td align="center" colspan="2"><font color="#ff0000" size="+1"><NS:template error raw/></font></td></tr>
+<NS:template inputs raw/>
+<tr>
+ <td align="center" colspan="2">
+   <input type="submit" name="submit" value="Update">
+ </td>
+</tr>
+</form>
+</table>

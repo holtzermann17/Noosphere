@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+
+use DBI;
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Encyclopedia;
+use Noosphere::IR;
+use Noosphere::Config;
+use Noosphere::Util;
+
+# connect to the database
+#
+$dbh=Noosphere::dbConnect;
+
+my $tid=Noosphere::lookupfield('tdesc','uid',"tname='objects'");
+
+Noosphere::irDeleteStats($tid,2641);
+Noosphere::irDeleteStats($tid,2653);
+Noosphere::irDeleteStats($tid,2597);
+Noosphere::irDeleteStats($tid,2644);

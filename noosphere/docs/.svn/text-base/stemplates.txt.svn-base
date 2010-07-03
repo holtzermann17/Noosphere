@@ -1,0 +1,60 @@
+The stemplates system is the successor template system to the original.
+All templates under this system reside under stemplate_path.  Instead of
+referring to text to be expanded by a dollar sign and an identifier,
+pseudo-html tags are used instead:
+
+      <PM:template identifier enctype>default value</PM:template>
+
+This is a bit more verbose than the old way, but it solves a lot of
+problems.  The enctype attribute is optional, and so is the default
+value (which defaults to the empty string).  If the empty string is a
+suitable default, one can combine the opening and closing tags in the XML
+style, e.g.
+
+      <PM:template identifier enctype/>
+
+The enctype attribute specifies the type of encoding done to whatever value
+is substituted for the tag.  If it is not specified, its value is presumed to
+be html.  The supported values for enctype are:
+
+    * html - The default.  The value is passed through htmlescape
+    * htmlfull - The value is passed through htmlescape twice
+    * qhtml - The value is passed through htmlescape, and then all
+              double-quotes are converted to &quot; (needed inside quoted
+              values for attributes of HTML tags)
+    * qhtmlfull - After qhtml encoding, the value is passed through
+                  htmlescape again
+    * query - The value is passed through urlescape
+    * raw - The value is substituted as-is
+
+Thus, if the template is written correctly, you don't have to worry about
+proper encoding in the code.
+
+The interface to the new template system is through the new Template module,
+which implements an object of type Template.  To create a template object,
+call
+
+      my $template = new Template($filename);
+
+This will load the template text from the given file (relative to
+stemplate_path) into the object and return it.
+
+To associate a value with a template field, use the setKey method on a
+template object.  E.g.
+
+      $template->setKey($key, $value);
+
+One can also have the association made only if one doesn't already exist,
+by calling
+
+      $template->setKeyIfUnset($key, $value);
+
+One can also pass a hash (value, not reference) to the methods setKeys and
+setKeysIfUnset.  To unset a key, there is the unsetKey method, and to unset
+a list of keys, there is the unsetKeys method.
+
+To get the template object's text, with all the substitutions made, simply
+call the expand method on the object.  For keys that are unspecified (note,
+this is not the same as, say, $template->setKey("emptyvalue", "");), the
+default value in the template (if any) is substituted.
+

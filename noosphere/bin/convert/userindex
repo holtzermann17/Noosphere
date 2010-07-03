@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+
+# add all users to the main object index
+
+use DBI;
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Encyclopedia;
+use Noosphere::Indexing;
+use Noosphere::Config;
+
+my $table=Noosphere::getConfig('user_tbl');
+
+# connect to the database
+#
+$dbh=Noosphere::dbConnect;
+
+my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'*',FROM=>$table);
+while (my $row=$sth->fetchrow_hashref()) {
+
+  print "doing $row->{username}\n";
+
+  Noosphere::indexTitle($table,$row->{uid},$row->{uid},$row->{username},$row->{username});
+}
+

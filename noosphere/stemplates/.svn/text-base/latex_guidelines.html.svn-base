@@ -1,0 +1,21 @@
+<font size="+2">LaTeX Submission Guidelines</font>
+<p>
+A standard template will be applied to your submission, giving you the AMS math package.  All you need to do is give us everything between \begin{document} and \end{document}.  The template looks like:
+<p>
+
+<table width="100%" cellspacing="0" cellpadding="2">
+<td bgcolor="#eeeeee">
+<pre>
+<NS:template template raw/>
+</pre>
+</td>
+</table>
+<p>
+"$math" is replaced with your submission.  
+<p>
+"$packages" is currently replaced \usepackage{html} if html commands (needed for reference linking) are within your entry. 
+<p>
+"$preamble" is where the preamble you create is inserted.
+<p>
+If you have any ideas for improvement regarding math templates, please give us some <a href="<NS:template main_url/>/?op=feedback">feedback</a>.
+

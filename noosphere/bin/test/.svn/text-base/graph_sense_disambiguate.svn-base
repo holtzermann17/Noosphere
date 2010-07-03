@@ -1,0 +1,262 @@
+#!/usr/bin/perl
+
+use DBI;
+use lib '/var/www/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Classification;
+use Noosphere::Crossref;
+
+my $table=Noosphere::getConfig('en_tbl');
+my $id=1843;
+my $homonym='trace';
+
+# connect to the database
+#
+$dbh=Noosphere::dbConnect;
+  
+# get homonym IDs
+#
+my @homs=getHomIds($table,$homonym);
+
+# get homonym classifications
+#
+my @classes;   # classifications for each homonym
+foreach my $hom (@homs) {
+  #print "homonym id $hom\n";
+  push @classes,[Noosphere::getclass($table,$hom)];
+}
+
+#foreach my $class (@classes) {
+#  foreach my $cat (@$class) {
+#    print "ns = $cat->{ns} cat = $cat->{cat}\n";
+#  }
+#  print "\n";
+#}
+
+my $winner=getBestByBFS($table,$id,\@homs,\@classes,2);
+
+print "winner by graph walking is $homs[$winner]\n";
+
+###############################################################################
+
+sub getBestByBFS {
+  my $table=shift;      # table the object is in
+  my $rootid=shift;     # root id to enter the object graph
+  my $homonyms=shift;   # list of homonym ids 
+  my $hclass=shift;     # homonym classifications (in the same order)
+  my $depth=shift;      # how deep to go into the graph. we have to be careful
+                        # because entries have an average of 10 links, which 
+						# means that by the second level we are analyzing 100
+						# nodes!
+
+  my $level=1;          # initialize level
+  my @queue=();         # bfs queue
+  my %seen;             # hash of ids we've seen (don't revisit nodes)
+
+  push @queue,$rootid;
+
+  $seen{$rootid}=1;
+  my $ncount=expandBFSQueue($table,\@queue,\%seen);  # init list w/first level
+
+  # each stage of this while loop represents a deeper "layer" of the graph
+  my $w=-1;    # winner
+  while ($w==-1 && $ncount >0 && $level<=$depth) {
+    #foreach my $node (@queue) {
+	#  print "($level) $node\n";
+	#}
+
+	my @scores=scoreAgainstArray($table,$hclass,\@queue);
+	#foreach my $i (0..$#scores) {
+	#  print "$level) $homonyms->[$i] scores $scores[$i]\n";
+	#}
+	
+	$w=winner(\@scores);
+    my $ncount=expandBFSQueue($table,\@queue,\%seen);   
+	$level++;
+  }
+
+  return $w;   # return winner index (or -1)  
+}
+
+# select the winning index out of an array of scores, -1 if indecisive
+#
+sub winner {
+  my $scores=shift;
+
+  my $top=-1;        
+  my $topidx=-1;
+
+  foreach my $i (0..scalar @{$scores}-1) {
+	my $score=$scores->[$i];
+    if ($score>$top) {
+	  $top=$score;
+	  $topidx=$i;
+	} elsif ($score==$top) {
+	  return -1;       # if we have a single tie, we fail
+	}
+  }
+
+  return $topidx;
+}
+
+# returns an array which gives the score for each node in the input homonym
+# list, which represents how much each homonym's classification coincides with
+# the aggregate of the classifications on the input object list
+#
+sub scoreAgainstArray {
+  my $table=shift;
+  my $class=shift;
+  my $array=shift;
+
+  my @scores=();
+  my @carray=();
+  
+  # get classification for the array items
+  #
+  foreach my $a (@$array) {
+    #print "getting class for $a\n";
+    my $fetchc=[Noosphere::getclass($table,$a)];
+    push @carray,$fetchc if (@{$fetchc}[0]);
+  }
+
+  # loop through each input classification and score it
+  #
+  foreach my $ca (@$class) {
+    my $total=0;
+	foreach my $cb (@carray) {
+	  #print "comparing a={$ca->[0]->{ns},$ca->[0]->{cat}, b={$cb->[0]->{ns},$cb->[0]->{cat}}\n";
+	  $total+=classCompare($ca,$cb);
+	}
+	push @scores,$total;
+  }
+
+  return @scores;
+}
+
+# expand id queue by pushing all the nodes immediately connected onto it
+#
+sub expandBFSQueue {
+  my $table=shift;
+  my $queue=shift;
+  my $seen=shift;
+  
+  my $count=scalar @{$queue};   # we're going to remove current elements
+#  print "count on queue $count\n";
+
+  my @neighbors=xrefGetNeighborListByList($table,$queue,$seen);
+  push @$queue,@neighbors;
+  splice @$queue,0,$count;      # delete front elements
+
+  return scalar @neighbors;      # return count of novel nodes
+}
+
+# pluralize the below, throwing out things in 'seen' list
+#
+sub xrefGetNeighborListByList {
+  my $table=shift;
+  my $sources=shift;
+  my $seen=shift;
+ 
+  my @outlist=();   # initialize output list
+  
+  foreach my $sid (@$sources) {
+    my @list=xrefGetNeighborList($table,$sid);
+	foreach my $nid (@list) {
+	  if (! defined $seen->{$nid}) {  # add only novel items
+	    push @outlist,$nid;
+		$seen->{$nid}=1;   
+	  }
+	}
+  }
+
+  return @outlist;
+}
+
+# get a list of "neighbors" in the crossreference graph, from a particular
+# node (i.e. nodes the source node can "see" or has outgoing links to)
+#
+sub xrefGetNeighborList {
+  my $table=shift;
+  my $source=shift;
+  
+  my $xtbl=Noosphere::getConfig('xref_tbl');
+ 
+  my @list=();
+
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'toid',FROM=>$xtbl,WHERE=>"fromid=$source and fromtbl='$table' and totbl='$table'"});
+
+  my @rows=Noosphere::dbGetRows($sth);
+
+  foreach my $row (@rows) {
+    push @list,$row->{toid};
+  }
+
+  return @list;
+}
+
+# compare and score two classifications against each other.  gives a count
+# of the coinciding categories.
+#
+# TODO: perhaps make this smarter than just brute force O(nm) where n and m
+# are the lengths of each classification
+#
+sub classCompare {
+  my $classa=shift;
+  my $classb=shift;
+
+  my $total=0;
+  
+  foreach my $cata (@$classa) {
+    foreach my $catb (@$classb) {
+	  $total+=catCompare($cata,$catb);
+	}
+  }
+
+  return $total;
+}
+
+# an elementary operation... compare two classification hashes to determine if
+# they are "equal" (in the same scheme, in the same section)
+#
+sub catCompare {
+  my $a=shift;
+  my $b=shift;
+
+  # TODO: make this handle mappings between schemes
+  #       also, handlers for other schemes
+
+  #print "comparing categories {$a->{ns},$a->{cat}}, {$b->{ns},$b->{cat}}\n";
+
+  return 0 if ($a->{ns} ne $b->{ns});
+
+  if ($a->{ns} eq 'msc') {
+    $a->{cat}=~/^([0-9]{2})/;
+    my $aprefix=$1;
+    $b->{cat}=~/^([0-9]{2})/;
+    my $bprefix=$1;
+
+	return 1 if ($aprefix eq $bprefix);
+  }
+
+  return 0;
+}
+
+# get all the object ids for a homonym
+#
+sub getHomIds {
+  my $table=shift;
+  my $title=shift;
+  
+  my ($rv,$sth)=Noosphere::dbSelect($dbh,{WHAT=>'uid',FROM=>$table,WHERE=>"title='$title'"});
+
+  my @homs;
+  my @rows=Noosphere::dbGetRows($sth);
+  
+  foreach my $row (@rows) {
+    push @homs,$row->{uid};
+  }
+
+  return @homs;
+}

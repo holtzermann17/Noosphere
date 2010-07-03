@@ -1,0 +1,28 @@
+
+<table cellpadding="2" cellspacing="0"><td>
+<center>
+<font size="+1" color="#ff0000">
+<NS:template error raw/>
+</font>
+</center>
+
+<form method="post" action="/">
+
+  <p>
+
+  To regain access to your account, you'll have to change your password.  To begin this process, enter your user name below and submit the form.  An e-mail message will be sent to the address you registered with, containing further instructions.
+
+  <p> 
+  
+  Your username: <input type="text" name="username" size="40" value="<NS:template username qhtml/>">
+   
+  <p>
+
+  <center>
+  <input type="submit" name="submit" value="submit">
+  </center>
+
+  <input type="hidden" name="op" value="pwchangereq">
+
+</form>
+</td></table>

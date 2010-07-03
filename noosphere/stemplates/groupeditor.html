@@ -1,0 +1,52 @@
+<table width="100%" cellpadding="2"><td>
+
+<form method="post" action="/">
+  
+  <i>Groups, combined with ACLs, give you the ability to control access to your objects among precise sets of <NS:template sitename/> users (these dimensions of access include reading, writing, and modifying ACLs.)  You can define groups here, and click on them to add members.   To change these groups' access to particular objects, simply create the appropriate access rule in the object's ACL editor, which appears in the "owner" menu when viewing the object.</i><br>
+  
+  </center>
+  <font size="+1" color="#ff0000"><NS:template error raw/></font>
+  </center>
+
+  <br>
+
+  <b>Add a new group:</b> <br><br>
+
+  <table align="center" width="90%"><tr><td>
+
+  Group Name:
+  <input type="text" name="groupname_new" value="<NS:template subjectid_new qhtml/>" size="30">
+  
+  <br><br>
+
+  Long description: <br>
+  <textarea rows="6" cols="70" name="groupdesc_new" value="<NS:template groupdesc_new qhtml/>">
+  </textarea>
+
+  </td></tr></table>
+
+  <br>
+
+  <center>
+  <input type="submit" name="addgroup" value="add group">
+  </center>
+
+  <br><br>
+
+  <b>Existing groups administered by you:</b>
+
+  <br><br>
+
+  <NS:template adminlist raw/>
+  
+  <br>
+
+  <center>
+  <input type="submit" name="delgroup" value="delete selected">    
+  </center>
+
+  <input type="hidden" name="op" value="groupedit">
+
+</form>
+
+</td></table>

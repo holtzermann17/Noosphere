@@ -1,0 +1,8 @@
+http://www.ams.org/msc/
+http://www.math.niu.edu/~rusin/known-math/
+http://www.ams.org/mathweb/mi-classifications.html
+
+planetmath will be broken down into a taxonomy based on the ams's msc thing. these will be the leaves in the tree. high level encompasing topics will be constructed in a logical manner so that browsers can "explore" topics of math and find related information without knowing specific names.
+
+this taxonomy should be fixed on creation of planetmath. additionally, papers that are submitted for our online library, will be forced to fit into an ams msc thing and this will be used for creating refined searches over a broad range of thigns.
+

@@ -1,0 +1,3 @@
+Thank you for creating a new account. In order to complete the account creation process, please go to the following url and set your password:
+
+http://<NS:template hostname/>/?op=activate&hash=<NS:template hash raw/>

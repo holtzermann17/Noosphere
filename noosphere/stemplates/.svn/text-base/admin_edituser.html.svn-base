@@ -1,0 +1,35 @@
+<table width="100%">
+<form method="post" action="<NS:template main_url/>/?op=edituser&amp;id=<NS:template id query/>">
+<tr><td><NS:template error raw/></td></tr>
+<tr>
+ <td bgcolor="#dddddd">Name:</td><td>
+   <input type="text" name="forename" value="<NS:template forename qhtml/>" size="15"> 
+   <input type="text" name="surname" value="<NS:template surname qhtml/>" size="18"> 
+ </td>
+</tr>
+<tr>
+ <td bgcolor="#dddddd">Email:</td><td>
+   <input type="text" name="email" value="<NS:template email qhtml/>" size="35">
+ </td>
+</tr>
+<tr>
+ <td bgcolor="#dddddd">Location:</td>
+ <td>
+   <input type="text" name="city" value="<NS:template city qhtml/>" size="15">, 
+   <input type="text" name="state" value="<NS:template state qhtml/>" size="3">,
+   <input type="text" name="country" value="<NS:template country qhtml/>" size="10">
+ </td>
+</tr>
+<tr>
+ <td bgcolor="#dddddd">Homepage:</td>
+ <td>
+   <input type="text" name="homepage" value="<NS:template homepage qhtml/>" size="35">
+ </td>
+</tr>
+<tr>
+ <td align="center" colspan="2">
+   <input type="submit" value="Update">
+ </td>
+</tr>
+</form>
+</table>

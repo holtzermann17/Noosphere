@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+
+  my ($rv,$sth)=Noosphere::dbLowLevelSelect($dbh,"select uid,title from objects where type=16");
+
+  while (my $row=$sth->fetchrow_hashref()) {
+    my $pid=Noosphere::synonymparentid($row->{uid});
+	print "$row->{title} => $pid\n";
+    my ($rv2,$sth2)=Noosphere::dbUpdate($dbh,{WHAT=>"objects",SET=>"parentid=$pid",WHERE=>"uid=$row->{uid}"});
+    $sth2->finish(); 
+  }
+

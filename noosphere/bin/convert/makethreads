@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+
+use lib '/var/www/noosphere/lib';
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Config;
+use Noosphere::Util;
+use DBI();
+
+  $DEBUG=1;
+
+  # start off by connecting to the db
+  #
+  die "Couldn't open database: ",$DBI::errstr unless ($dbh=Noosphere::dbConnect());
+
+  my $replacements=0;
+  
+  do {
+    my ($rv,$sth)=Noosphere::dbLowLevelSelect($dbh,"select m1.uid,m2.threadid from messages as m1 , messages as m2 where m1.threadid is null and m2.uid=m1.replyto and m2.threadid is not null");
+
+    $replacements=1 if ($sth->rows()>0);
+
+    # we got some messages that need changing to the given threadids, do it
+    # 
+    while (my $row=$sth->fetchrow_hashref()) {
+      my ($rv2,$sth2)=Noosphere::dbUpdate($dbh,{WHAT=>"messages",SET=>"threadid=$row->{threadid}",WHERE=>"uid=$row->{uid}"});
+      $sth2->finish(); 
+    }
+  } while ($replacements);
+

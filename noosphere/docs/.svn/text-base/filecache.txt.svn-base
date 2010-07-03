@@ -1,0 +1,15 @@
+A FileCache object is created by calling new FileCache($filename).  If the
+given file has been opened since last restart, and has not been modified
+since the last time it was opened, then an old copy of the file contents is
+returned.  This means that there is a stat call and a time call for each
+file request using a FileCache.  To obtain the contents, simply call the
+getText method on the object.  One can force a reload by calling the reload
+method on the object.  Otherwise a reload only occurs in the object
+constructor, and only if the modification time on the requested file is
+more recent than the last cache time.
+
+The point of this is so that files can be changed at runtime without
+requiring a restart of apache.  It's not a big deal, but neither was adding
+it.  Any stemplate can now be modified at runtime without any restart
+required.
+

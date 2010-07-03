@@ -1,0 +1,14 @@
+\documentclass[12pt]{article}
+\pagestyle{empty}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{color}
+\pagecolor[rgb]{0,0.2,0.6}
+
+\begin{document}
+
+${\color[rgb]{1,1,1} <NS:template math raw/>}$
+
+\end{document}

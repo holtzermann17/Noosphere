@@ -1,0 +1,42 @@
+<form METHOD="post" ACTION="<NS:template main_url/>">
+<table WIDTH="100%" BORDER="0" CELLPADDING="2" CELLSPACING="2">
+  <tr>
+   <td COLSPAN="2" WIDTH="100%" ALIGN="CENTER">
+    <small>
+     <a HREF="<NS:template main_url/>/?op=newuser">create new user</a>
+    </small>
+   </td>
+  </tr>
+  <tr><td ALIGN="CENTER" COLSPAN="2"><font COLOR="#FF0000" SIZE="+1"><NS:template error raw/></font></td></tr>
+  <tr>
+   <td ALIGN="RIGHT">
+    <small>
+     name:
+    </small>
+   </td>
+   <td>
+    <input class="small" TYPE="text" NAME="user" SIZE="10" MAXLENGTH="32">
+   </td>
+  </tr>
+  <tr>
+   <td ALIGN="RIGHT">
+    <small>
+     pass:
+    </small>
+   </td>
+   <td>
+    <input class="small" TYPE="password" NAME="passwd" SIZE="10" MAXLENGTH="32">
+   </td>
+  </tr>
+  <tr>
+   <td COLSPAN="2" ALIGN="CENTER">
+    <input TYPE="hidden" NAME="url" VALUE="<NS:template url query/>">
+    <input TYPE="hidden" NAME="op" VALUE="login">
+    <input class="small" TYPE="submit" VALUE="login">
+   </td>
+  </tr>
+  <tr>
+   <td align="center" colspan="2"><font size="-2"><a href="<NS:template main_url/>/?op=pwchangereq">forget your password?</a></font></td>
+  </tr>
+</table>
+</form>

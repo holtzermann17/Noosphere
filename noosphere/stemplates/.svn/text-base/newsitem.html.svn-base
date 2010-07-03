@@ -1,0 +1,29 @@
+<tr><td>
+	<table width="100%" cellpadding="0" cellspacing="3">
+		<tr>
+			<td>
+				<font size="+2"><NS:template title raw/></font>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				by <NS:template user raw/> on <NS:template date/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<NS:template intro raw/>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<NS:template more raw/>
+			</td>
+		</tr>
+		<tr>
+			<td height="3">
+				<hr width="100%" size="1" noshade="noshade"/>
+			</td>
+		</tr>	
+	</table>
+</td></tr>

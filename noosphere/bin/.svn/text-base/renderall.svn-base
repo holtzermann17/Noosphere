@@ -1,0 +1,140 @@
+#!/usr/bin/perl
+
+###############################################################################
+#
+# The background rendering script.  This exists to make sure the system is 
+# productive even during "idle" time (client-wise), and helps minimize the 
+# number of rendering waits the user is subject to.
+#
+###############################################################################
+
+use DBI;
+use lib '/usr/local/apache/htdocs/noosphere/lib';
+
+use Noosphere qw($dbh $DEBUG);
+use Noosphere::DB;
+use Noosphere::Cache;
+use Noosphere::Config;
+use Noosphere::Cache;
+use Noosphere::Util;
+
+# connect to the database
+#
+$dbh = Noosphere::dbConnect;
+
+Noosphere::initNoosphere();
+
+#my @methods = ('l2h', 'png');
+my @methods = ('l2h');
+my $table = Noosphere::getConfig('en_tbl');
+my $runfile = "/usr/local/apache/htdocs/noosphere/bin/run/renderall.running";
+
+$|=1;
+
+if ( -e $runfile ) {
+	print "alreadying running exiting\n";
+	exit 1;
+}
+
+# necessary so cached entries can be overwritten by the web application
+umask 0002;
+
+$ENV{'PATH'} = "/bin:/usr/bin:/usr/local/bin";
+
+push @INC, ".";
+
+`echo 1 > $runfile`;
+
+$DEBUG = 0;	 # dont need debugging of database access
+
+open STDERR, ">/usr/local/apache/htdocs/noosphere/bin/logs/error-renderall";
+
+print "removing dead objects\n";
+
+# remove dead objects
+#
+my ($rv,$sth) = Noosphere::dbLowLevelSelect($dbh,"select cache.objectid from cache left outer join $table on cache.objectid = $table.uid where cache.tbl = '$table' and $table.uid is null");
+while (my $row = $sth->fetchrow_hashref()) {
+	print " dangling cacheref ($row->{objectid}), deleting\n";
+	Noosphere::deletecacheflags($table,$row->{objectid});
+}
+$sth->finish();
+
+# add unrendered cache entries for objects that aren't in the cache at all yet
+# (basically opposite of the above -- needed if this is a clean restore)
+#
+foreach my $method (@methods) {
+	my $sth = $dbh->prepare("select $table.uid from $table left outer join cache on $table.uid = cache.objectid and cache.tbl = '$table' and cache.method = '$method' where cache.objectid is null;");
+	$sth->execute();
+	while (my $row = $sth->fetchrow_hashref()) {
+		print " object $row->{uid} not in cache yet for $method; adding\n";
+		Noosphere::createcacheflags($table,$row->{'uid'},$method);		}
+	$sth->finish();
+}
+
+print "checking for invalid objects and rendering\n";
+
+foreach my $method (@methods) {
+	while (my $row = getNextRow($method)) {
+
+		# message, and fix timed out build
+		#
+		if ($row->{'build'}==1) {
+			print "timed out '$row->{title}' ($row->{objectid}), rerendering ";
+			Noosphere::setbuildflag_off($table,$row->{'objectid'},$method);
+		} else {
+			print "rendering '$row->{title}' ($row->{objectid}) ";
+		}
+
+		# get the full row record
+		#
+		my ($rv,$sth) = Noosphere::dbSelect($dbh,{WHAT=>"*",FROM=>$table,WHERE=>"uid=$row->{objectid}"});
+		my $rec = $sth->fetchrow_hashref();
+		$sth->finish();
+
+#		print "got rec $rec->{title} $rec->{uid}\n";
+#		my ($build,$valid)=Noosphere::getcacheflags($table,$rec->{uid},$method);
+#		print "cache flags build=$build, valid=$valid\n";
+
+		# render the object to cache
+		#
+		print "[$method]";
+	
+		open(OLDOUT, ">&STDOUT");
+		open STDOUT, ">>/usr/local/apache/htdocs/noosphere/bin/run/stdout-renderall";
+		Noosphere::cacheObject($table, $rec, $method);
+		open(STDOUT, ">&OLDOUT");
+
+		print "\n";
+	}
+
+}
+
+close STDERR;
+
+`rm $runfile`;
+
+###############################################################################
+
+sub getNextRow {
+	my $method = shift;
+
+	my $table = Noosphere::getConfig('en_tbl');
+	
+	my $int = "";
+	$int = "interval '10 minutes'" if Noosphere::getConfig('dbms') eq 'pg';
+	$int = "interval 10 MINUTE" if Noosphere::getConfig('dbms') eq 'mysql';
+	
+	my $sth = $dbh->prepare("select cache.objectid,cache.build,cache.touched,$table.title from cache,$table where $table.uid = cache.objectid and cache.tbl = '$table' and (cache.valid=0 or cache.valid_html=0) and (cache.build=0 or cache.touched <= now() - $int) and method='$method' and bad = 0 order by rrequests desc limit 1");
+	$sth->execute();
+
+	warn "got ".$sth->rows()." rows";
+
+	return undef if ($sth->rows() < 1);
+	
+	my $row = $sth->fetchrow_hashref();
+	$sth->finish();
+
+	return $row;
+}
+

@@ -1,0 +1,46 @@
+
+<p>
+<font size="+1" color="#ff0000">
+<NS:template error raw/>
+</font>
+<center>
+<table width="100%" cellpadding="3"><td bgcolor="#dddddd" align="center">
+<table BORDER="0" CELLPADDING="2" CELLSPACING="2">
+ <form METHOD="post" ACTION="/">
+  <tr>
+   <td ALIGN="RIGHT" valign="center">
+     Username:
+   </td>
+   <td>
+    <input TYPE="text" name="user" SIZE="16" MAXLENGTH="32" value="<NS:template user qhtml/>">
+   </td>
+  </tr>
+  <tr>
+   <td ALIGN="RIGHT" valign="center">
+     Email:
+   </td>
+   <td>
+    <input TYPE="text" name="email" SIZE="16" MAXLENGTH="128" value="<NS:template email qhtml/>">
+   </td>
+  </tr>
+  <tr><td colspan="2" align="left">
+    <input type="checkbox" name="license"> 
+Permission is granted to copy, distribute and/or modify any material
+that I submit to this web site under the terms of the GNU Free
+Documentation License, Version 1.2 or any later version published by the
+Free Software Foundation; with no Invariant Sections, with no
+Front-Cover Texts, and with no Back-Cover Texts. A copy of the license
+is included in the section entitled <A HREF="http://<NS:template staticsiteaddr raw/>/fdl/fdl.txt">"GNU Free Documentation License"</A>. 
+	</td>
+  </tr>
+  <tr>
+   <td COLSPAN="2" ALIGN="CENTER">
+    <input TYPE="hidden" NAME="op" VALUE="newuser">
+    <input TYPE="hidden" name="verify" value="1">
+    <input TYPE="submit" VALUE="create account">
+   </td>
+  </tr>
+ </form>
+</table>
+</td></table>
+</center>

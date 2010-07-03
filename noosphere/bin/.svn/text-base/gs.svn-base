@@ -1,0 +1,84 @@
+#!/usr/bin/perl
+#
+# wrapper for GS with custom PM stuff added
+#
+
+$LOGFILE="pmgs.log";
+
+# remove an argument from the args array if it matches some regexp
+#
+sub removearg {
+	my $args = shift;
+	my $re = shift;
+
+	for (my $i = (scalar @$args - 1); $i >=0; $i--) {
+
+		if ($args->[$i] =~ /$re/) {
+
+			splice @$args, $i, 1;
+		}
+	}
+}
+
+# get the value of an argument matching a r.e.
+#
+sub getarg {
+	my $args = shift;
+	my $re = shift;
+
+	foreach my $arg (@$args) {
+		if ($arg =~ /$re/) {
+			return $arg;
+		}
+	}
+}
+
+
+###############################################################################
+#  
+#                                MAIN CODE
+#
+###############################################################################
+
+# initialize stuff
+#
+$CMD_GRAPHICSAA = "";
+$CMD_DPI = "";
+$CMD_RES = "";
+
+open LOG, ">$LOGFILE";
+
+# grab command-line args
+#
+my @ARGS = @ARGV;
+
+# set specialized options
+#
+
+if ( $ENV{GS_GRAPHICSAA} eq '1') {
+	$CMD_GRAPHICSAA = "-dGraphicsAlphaBits=4";
+}
+
+if ( $ENV{GS_DPI} eq '1' ) {
+	removearg(\@ARGS, '^-r');
+	$CMD_DPI = "-r432x72";
+
+	# modify resolution
+	#
+	my $res = getarg(\@ARGS, '^-g');
+	$res =~ /-g(\d+)x(\d+)/;
+	my $resx = $1 * 6;
+	my $resy = $2;
+	$CMD_RES = "-g".$resx.'x'.$resy;
+	my $res = removearg(\@ARGS, '^-g');
+}
+
+# execute gs 
+#
+my $cmd = "/usr/bin/gs $CMD_GRAPHICSAA $CMD_DPI $CMD_RES @ARGS";
+
+print LOG "executing [$cmd]\n";
+
+system($cmd);
+
+close LOG;

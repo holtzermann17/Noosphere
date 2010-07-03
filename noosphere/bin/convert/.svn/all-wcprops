@@ -1,0 +1,203 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/3/trunk/noosphere/bin/convert
+END
+irunindex.pl
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/irunindex.pl
+END
+deletestats
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/deletestats
+END
+mscuids.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/mscuids.pl
+END
+irindex_stuff.pl
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/irindex_stuff.pl
+END
+chgimgsrv
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/chgimgsrv
+END
+delwatches.pl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/delwatches.pl
+END
+makeacldefault
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/makeacldefault
+END
+irreindex.pl
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/irreindex.pl
+END
+userindex
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/userindex
+END
+makewatches.pl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/makewatches.pl
+END
+make_acl_from_defaults
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/make_acl_from_defaults
+END
+synonymparents
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/synonymparents
+END
+mkcatlinks.pl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/mkcatlinks.pl
+END
+dangling_watches.pl
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/dangling_watches.pl
+END
+copy_over_dfs.pl
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/copy_over_dfs.pl
+END
+fixcaplinks
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/fixcaplinks
+END
+makegmemberdefault
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/makegmemberdefault
+END
+makeclassdb.pl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/makeclassdb.pl
+END
+danglinglinks
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/danglinglinks
+END
+add_missing_default_acls
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/add_missing_default_acls
+END
+fixmathsyns.pl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/fixmathsyns.pl
+END
+getconcepts.pl
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/getconcepts.pl
+END
+makethreads
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/makethreads
+END
+irindex_users.pl
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/irindex_users.pl
+END
+irindex_en.pl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/irindex_en.pl
+END
+makegroupdefault
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/makegroupdefault
+END
+put_owner_in_authorlist.pl
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/put_owner_in_authorlist.pl
+END
+trans.pl
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/trans.pl
+END
+indexchars.pl
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/indexchars.pl
+END
+uniquelinks
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/uniquelinks
+END
+titleindex
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/titleindex
+END
+inval_index_update.pl
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/inval_index_update.pl
+END
+irindex.pl
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/3/trunk/noosphere/bin/convert/irindex.pl
+END

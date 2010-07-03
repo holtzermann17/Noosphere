@@ -1,0 +1,13 @@
+<table width="100%" cellpadding="0" cellspacing="2"> 
+	<tr>
+		<td>
+			<NS:template original raw/>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			<NS:template post raw/>
+		</td>
+	</tr>
+</table>
