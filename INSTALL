@@ -116,12 +116,12 @@ Section 2 : Installation Procedure
 
  5d. Patch latex2html for Noosphere:
 
-      patch latex2html < $NSROOT/install/patch-latex2html-2002-2
+      patch latex2html < $NSROOT/patches/patch-latex2html-2002-2
 
      Also patch some other l2h modules:
 
-	  patch -p0 < $NSROOT/install/patch-latex2html-2002-2-math.pl
-	  patch /usr/local/share/lib/latex2html/styles/babel.perl < $NSROOT/install/patch-latex2html-2002-2-styles
+	  patch -p0 < $NSROOT/patches/patch-latex2html-2002-2-math.pl
+	  patch /usr/local/share/lib/latex2html/styles/babel.perl < $NSROOT/patches/patch-latex2html-2002-2-styles
 
  5e. Install patched latex2html locally for Noosphere:
 
@@ -130,7 +130,7 @@ Section 2 : Installation Procedure
  5f. For Russian support patch latex2html style files:
 
       cd $L2HDIR/styles 
-      patch < $NSROOT/install/patch-latex2html-2002-2-styles
+      patch < $NSROOT/patches/patch-latex2html-2002-2-styles
 
      $L2HDIR will probably be something like /usr/share/latex2html.  For me it
      was /usr/local/share/lib/latex2html.
