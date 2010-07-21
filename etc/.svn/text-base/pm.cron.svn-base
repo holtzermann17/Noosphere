@@ -1,6 +1,0 @@
-00 7 * * * /home/pm/pm_backup.pl >/dev/null
-00 8 * * * /var/www/noosphere/bin/cleantemp >/dev/null
-*/10 * * * * /var/www/noosphere/bin/renderall >/dev/null
-00 10 * * * /var/www/noosphere/bin/snapshot_gen.sh >/dev/null
-37 * * * * /var/www/noosphere/bin/outstandingcor >/dev/null
-*/5 * * * * /var/www/noosphere/bin/cleansearchresults >/dev/null

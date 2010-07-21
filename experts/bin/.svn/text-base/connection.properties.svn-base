@@ -1,4 +1,0 @@
-db=jdbc:mysql://198.82.160.117:3307/pm
-user=pm
-pass=groupschemes
-driver=com.mysql.jdbc.Driver
